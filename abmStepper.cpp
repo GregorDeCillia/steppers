@@ -2,27 +2,18 @@
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/format.hpp>
 
+#include "typedefs.h"
+#include "stepperBase.h"
+
 #include <boost/numeric/ublas/io.hpp>
 
 using namespace boost::numeric::ublas;
 
-typedef double value_type;
-typedef value_type time_type;
-typedef vector<value_type> state_type;
-typedef state_type deriv_type;
-typedef vector<deriv_type> buffer_type;
-
-class abmStepper
+class abmStepper: public stepper
 {
 private:
-	int ord_;
-	unsigned int nStates_;
 	buffer_type buffer_;
 	int buffer_index_;
-	time_type h_;
-	time_type t_;
-	state_type x_;
-	state_type dx_;
 
 	void rk4step( time_type h ){
 		deriv_type k1 = dx_;
@@ -37,8 +28,7 @@ private:
 
 public:
 	abmStepper( unsigned int nStates ) :
-		ord_( 1 ),
-		nStates_( nStates ),
+		stepper( nStates ),
 		buffer_( 4 ),
 		buffer_index_( 0 ){
 	};
@@ -48,47 +38,16 @@ public:
 		return( x ); 
 	}
 
-	void setStates( time_type t, state_type x ){
-		if ( t == t_ )
-			{
-			bool flag = true;
-			for ( int i = 0; i < nStates_; i++ )
-				if ( x[i] != x_[i] ); flag = false;
-			if ( flag )
-				return;
-			}
-		t_ = t;
-		x_ = x;
-		dx_ = f( t_, x_);
-		buffer_index_ = 0;
-	}
-	void getStates( time_type &t, state_type &x ){
-		t = t_;
-		x = x_;
-	}
-
-	void printStates(){
-		std::cout << boost::format( "%-15E" ) % t_;
-		for ( unsigned int i = 0; i < nStates_; i++ ){
-			std::cout << boost::format( "%-15E" ) % x_[i];
-		}
-		std::cout << std::endl;
-	}
-
-	void printLabels(){
-		std::cout << boost::format( "%-15s" ) % "time";
-		for ( unsigned int i = 0; i < nStates_; i++ ){
-			std::cout << boost::format( "%-1s%-14i" ) % "x" % i;
-		}
-		std::cout << std::endl;
-	}
-
 	void printBuffer(){
 		std::cout << boost::format( "%-15E" ) % t_;
 		for ( unsigned int i = 0; i < nStates_; i++ ){
 			std::cout << boost::format( "%-15E" ) % buffer_[i][1];
 		}
 		std::cout << std::endl;		
+	}
+
+	void clearBuffers(){
+		buffer_index_ = 0;
 	}
 
 
