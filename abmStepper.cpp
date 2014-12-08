@@ -14,6 +14,7 @@ class abmStepper
 {
 private:
 	int ord_;
+	unsigned int nStates_;
 	buffer_type buffer_;
 	time_type t_;
 	state_type x_;
@@ -21,16 +22,16 @@ private:
 	
 
 public:
-	abmStepper() :
-		ord_(1){};
+	abmStepper( unsigned int nStates ) :
+		ord_(1),
+		nStates_(nStates){};
 
 	state_type f(time_type t, state_type x){
 		value_type k = 100;
-		x[0] = x[0];
+		//x[0] = x[0];
 		return( x ); 
 	}
 
-public:
 	void setStates( time_type t, state_type x ){
 		if ( t == t_ && x[0] == x_[0] )
 			return;
@@ -45,11 +46,19 @@ public:
 	}
 
 	void printStates(){
-		std::cout << boost::format( "%-15E%-15E\n" ) % t_ % x_[0];
+		std::cout << boost::format( "%-15E" ) % t_;
+		for ( unsigned int i = 0; i < nStates_; i++ ){
+			std::cout << boost::format( "%-15E" ) % x_[i];
+		}
+		std::cout << std::endl;
 	}
 
 	void printLabels(){
-		std::cout << boost::format( "%-15s%-15s\n" ) % "time" % "state";
+		std::cout << boost::format( "%-15s" ) % "time";
+		for ( unsigned int i = 0; i < nStates_; i++ ){
+			std::cout << boost::format( "%-1s%-14i" ) % "x" % i;
+		}
+		std::cout << std::endl;
 	}
 
 	void rk4step( time_type h ){
@@ -66,10 +75,12 @@ public:
 };
 
 int main(){
-	abmStepper stepper;
+	int nStates = 4;
+	abmStepper stepper( nStates );
 	time_type t,t2 = 0;
-	state_type x(1),x2(1);
-	x[0]=3;
+	state_type x(nStates),x2(nStates);
+	for ( int i = 0; i < nStates; i++ )
+		x[i]= i;
 	stepper.printLabels();
 	stepper.setStates(t,x);
 	stepper.printStates();
