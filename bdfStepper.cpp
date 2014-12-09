@@ -4,7 +4,7 @@
 
 #include <boost/numeric/ublas/io.hpp>
 #include "typedefs.h"
-#include "stepperBase.h"
+#include "stepperBase/stepperBase.h"
 
 using namespace boost::numeric::ublas;
 

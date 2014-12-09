@@ -3,7 +3,7 @@
 #include <boost/format.hpp>
 
 #include "typedefs.h"
-#include "stepperBase.h"
+#include "stepperBase/stepperBase.h"
 
 #include <boost/numeric/ublas/io.hpp>
 
