@@ -2,11 +2,11 @@
 
 This bsase class defines functionalities all steppers have
 
-# Virtual functions
+### Virtual functions
 - `clearBuffers()` Gets tiggered whenever the states change. This function is trivial for single step methods
 - `doStep( h )` performs a step of size h
 
-# Other functions
+### Other functions
 - `getStates( t, x )`
 - `printStates()`
 - `setStates( t, x )`

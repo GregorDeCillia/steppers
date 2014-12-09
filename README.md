@@ -2,7 +2,7 @@
 
 Implemented with the vector aritmetics of boost::odeint
 
-# Plans
+### Plans
 - [x] Adams basforth Moulton
 - [x] Backward differentiation Formula
 - [ ] Runge Kutta Method
