@@ -1,9 +1,12 @@
-### Multistep Methods implemented with the vector aritmetics of boost::odeint
+## An OOP approach to Multistep Methods 
 
-Plans
+Implemented with the vector aritmetics of boost::odeint
+
+# Plans
 - [x] Adams basforth Moulton
 - [x] Backward differentiation Formula
 - [ ] Runge Kutta Method
 - [ ] implicit methods
 - [ ] Virtual Base classes
-  - [ ] underclasses like one-step method, multi-step method, etc...
+  - [x] base class for stepper
+  - [ ] virtual underclasses like one-step method, multi-step method, etc...
