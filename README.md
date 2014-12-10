@@ -8,5 +8,9 @@ Implemented with the vector aritmetics of [boost::numeric::ublas::vector](http:/
 - [ ] [Runge Kutta Methods](https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods)
 - [ ] [implicit methods](https://en.wikipedia.org/wiki/Explicit_and_implicit_methods)
 - [ ] [Virtual Base classes](https://en.wikipedia.org/wiki/Virtual_inheritance)
-  - [x] base class for stepper
+  - [x] stepper
+    - [ ] single step method
+    - [ ] multi step method
+      - [ ] predicor
+      - [ ] corrector
   - [ ] virtual underclasses like one-step method, multi-step method, etc...
