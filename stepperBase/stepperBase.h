@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../typedefs.h"
 
 class stepper{
@@ -45,8 +47,6 @@ class stepper{
 		clearBuffers();
 	}
 
-	//virtual void clearBuffers() = 0;
-
 	void printLabels(){
 		std::cout << boost::format( "%-15s" ) % "time";
 		for ( unsigned int i = 0; i < nStates_; i++ ){
@@ -55,6 +55,6 @@ class stepper{
 		std::cout << std::endl;
 	}	
 
-	virtual void clearBuffers() = 0;
+	virtual void clearBuffers(){};
 	virtual void doStep( time_type h ) = 0;
 };

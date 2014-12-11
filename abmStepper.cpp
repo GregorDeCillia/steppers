@@ -15,6 +15,11 @@ private:
 	buffer_type buffer_;
 	int buffer_index_;
 
+	state_type f(time_type t, state_type x){
+		value_type k = 100;
+		return( x ); 
+	}
+
 	void rk4step( time_type h ){
 		deriv_type k1 = dx_;
 		deriv_type k2 = f ( t_ + h/2.0 , x_ + k1*h/2.0 );
@@ -33,11 +38,6 @@ public:
 		buffer_index_( 0 ){
 	};
 
-	state_type f(time_type t, state_type x){
-		value_type k = 100;
-		return( x ); 
-	}
-
 	void printBuffer(){
 		std::cout << boost::format( "%-15E" ) % t_;
 		for ( unsigned int i = 0; i < nStates_; i++ ){
@@ -55,8 +55,6 @@ public:
 		if ( h != h_ )
 			buffer_index_ = 0;
 		h_ = h;
-		//std::cout << buffer_ << std::endl;
-		//std::cout << buffer_.size() << std::endl;
 		if ( buffer_index_ < 4 )
 			{
 			rk4step( h );
@@ -87,26 +85,3 @@ public:
 		}
 	}
 };
-
-int main(){
-	int nSteps = pow(2,5);
-	std::cout << "number of steps: " << nSteps << std::endl;
-	int nStates = 4;
-	abmStepper stepper( nStates );
-	time_type t,t2 = 0;
-	state_type x(nStates), x2(nStates);
-	for ( int i = 0; i < nStates; i++ )
-		x[i]= i;
-	stepper.printLabels();
-	stepper.setStates(t,x);
-	stepper.printStates();
-	for ( int i = 0; i < nSteps; i++ ){
-		stepper.doStep( 1.0/nSteps );
-	}
-	stepper.printStates();
-	stepper.getStates( t, x2 );
-	t = t - 1; x2 = x2 - x*exp(1);
-	stepper.setStates(t, x2);
-	std::cout << "Errors:" << std::endl;
-	stepper.printStates();
-}
