@@ -1,7 +1,7 @@
 #pragma once
 
-#include "assigner.hpp"
-#include "stepperBase/rkStepperBase.h"
+#include "../../include/assigner.hpp"
+#include "rkStepperBase.h"
 
 class ode12Stepper: public rkStepper
 {

@@ -1,9 +1,8 @@
-#include "typedefs.h"
-#include "abmStepper.cpp"
-#include "bdfStepper.cpp"
-#include "eulerStepper.cpp"
-#include "ode45Stepper.cpp"
-#include "ode12Stepper.cpp"
+#include "include/typedefs.h"
+#include "stepper/multiStepper/abmStepper.cpp"
+#include "stepper/multiStepper/bdfStepper.cpp"
+#include "stepper/rkStepper/ode12Stepper.cpp"
+#include "stepper/rkStepper/ode45Stepper.cpp"
 
 template <class STEPPERTYPE>
 void runSimulation( STEPPERTYPE stepper, 
@@ -51,10 +50,7 @@ int main()
 	bdfStepper stepper3( nStates, f );
 	runSimulation( stepper3 );
 
-	eulerStepper stepper4( nStates, f );
+	ode12Stepper stepper4( nStates, f );
 	runSimulation( stepper4 );
-
-	ode12Stepper stepper5( nStates, f );
-	runSimulation( stepper5 );
 
 }

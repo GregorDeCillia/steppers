@@ -1,8 +1,7 @@
 #pragma once
 
-#include "../typedefs.h"
-#include "stepperBase.h"
-#include "../ode45Stepper.cpp"
+#include "../stepperBase.h"
+#include "../rkStepper/ode45Stepper.cpp"
 
 #include <boost/format.hpp>
 #include <iostream>

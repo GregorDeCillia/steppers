@@ -1,7 +1,6 @@
 #pragma once
 
-#include "typedefs.h"
-#include "stepperBase/multiStepperBase.h"
+#include "multiStepperBase.h"
 
 class abmStepper: public multiStepper
 {
