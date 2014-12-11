@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../typedefs.h"
+#include <boost/format.hpp>
 
 class stepper{
  protected:
