@@ -5,16 +5,28 @@
 #include "stepperBase/multiStepperBase.h"
 #include "rk4Stepper.cpp"
 
-#include <boost/numeric/ublas/io.hpp>
-
 class abmStepper: public multiStepper
 {
 private:
+	state_type xAB_;
+	void predictor(){
+		xAB_ = x_ + h_*(  55.0/24.0*buffer_[3] 
+		                 - 59.0/24.0*buffer_[2] 
+		                 + 37.0/24.0*buffer_[1] 
+		                 - 03.0/08.0*buffer_[0] );
+		t_+=h_;
+	}
+	void corrector(){
+		xAB_ = x_ + h_*(  251.0/720.0*f(t_,xAB_)  + 646.0/720.0*buffer_[3]
+		                 -264.0/720.0*buffer_[2] + 106.0/720.0*buffer_[1]
+		                 -019.0/720.0*buffer_[0] );
+	}
 
 public:
 
 	abmStepper( unsigned int nStates , rhs_type f) :
-		multiStepper( nStates,4, f ){};
+		multiStepper( nStates, 4, f ),
+		xAB_( nStates ){};
 
 	void doStep( time_type h ){
 		if ( h != h_ ){
@@ -31,18 +43,12 @@ public:
 			}
 		else{
 			// calculate the predictor
-			state_type xAB = x_ + h*(  55.0/24.0*buffer_[3] 
-			                           - 59.0/24.0*buffer_[2] 
-			                           + 37.0/24.0*buffer_[1] 
-			                           - 03.0/08.0*buffer_[0] );
-			t_+=h;
+			predictor();
 			// make corrector step
 			for( int i = 0; i < ord_; i++ ){
-				xAB = x_ + h*(  251.0/720.0*f(t_,xAB)  + 646.0/720.0*buffer_[3]
-				               -264.0/720.0*buffer_[2] + 106.0/720.0*buffer_[1]
-				               -019.0/720.0*buffer_[0] );
+				corrector();
 			}
-			x_ = xAB;
+			x_ = xAB_;
 			// cycle the buffer and fill in the new value
 			buffer_[0] = buffer_[1]; 
 			buffer_[1] = buffer_[2]; 

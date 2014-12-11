@@ -1,7 +1,5 @@
 #pragma once
 
-#include <boost/format.hpp>
-
 #include "typedefs.h"
 #include "stepperBase/stepperBase.h"
 #include "stepperBase/multiStepperBase.h"
@@ -9,8 +7,22 @@
 
 class bdfStepper: public multiStepper
 {
+private:
+	
+	void predictor(){
+			x_  = - 1.0*buffer_[0] + 4.0*buffer_[1]
+				  - 6.0*buffer_[2] + 4.0*buffer_[3] ;
+			t_ += h_;
+	}
+
+	void corrector(){
+		x_= +01.0/25.0*( 48.0*buffer_[3]-36.0*buffer_[2]
+		                +16.0*buffer_[1]-03.0*buffer_[0] )
+			+12.0/25.0*h_*f(t_,x_);		
+	}
 
 public:
+
 	bdfStepper( unsigned int nStates, rhs_type f ) : 
 		multiStepper( nStates, 4, f ){};
 
@@ -29,14 +41,10 @@ public:
 			}
 		else{
 			// calculate the predictor
-			x_ = - 1.0*buffer_[0] + 4.0*buffer_[1]
-				- 6.0*buffer_[2] + 4.0*buffer_[3] ;
-			t_+=h;
+			predictor();
 			// make corrector step
 			for( int i = 0; i < ord_; i++ ){
-				x_=+01.0/25.0*( 48.0*buffer_[3]-36.0*buffer_[2]
-				                +16.0*buffer_[1]-03.0*buffer_[0] )
-					+12.0/25.0*h*f(t_,x_);
+				corrector();
 			}
 			// cycle the buffer and fill in the new value
 			buffer_[0] = buffer_[1]; 
