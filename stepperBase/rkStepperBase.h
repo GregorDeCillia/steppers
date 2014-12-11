@@ -53,6 +53,7 @@ class rkStepper: public stepper
 			x2_ += k_[i]*b[i];
 		}
 		x_ = x_ + h*x2_;
+		t_ += h;
 	}
 
 };

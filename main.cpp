@@ -3,6 +3,7 @@
 #include "bdfStepper.cpp"
 #include "eulerStepper.cpp"
 #include "ode45Stepper.cpp"
+#include "ode12Stepper.cpp"
 
 template <class STEPPERTYPE>
 void runSimulation( STEPPERTYPE stepper, 
@@ -52,5 +53,8 @@ int main()
 
 	eulerStepper stepper4( nStates, f );
 	runSimulation( stepper4 );
+
+	ode12Stepper stepper5( nStates, f );
+	runSimulation( stepper5 );
 
 }
