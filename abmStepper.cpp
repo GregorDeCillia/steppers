@@ -23,8 +23,6 @@ protected:
 	}
 
 public:
-
 	abmStepper( unsigned int nStates , rhs_type f ) :
-		multiStepper( nStates, 4, f ){};
-
+		multiStepper( nStates, 4, f , 2, "ABM" ){};
 };

@@ -2,6 +2,7 @@
 #include "abmStepper.cpp"
 #include "bdfStepper.cpp"
 #include "rk4Stepper.cpp"
+#include "eulerStepper.cpp"
 
 template <class STEPPERTYPE>
 void runSimulation( STEPPERTYPE stepper, 
@@ -17,6 +18,7 @@ void runSimulation( STEPPERTYPE stepper,
 	}
 	stepper.getStates( t, x );
 	stepper.setStates( t - 1, x - x0*exp(1) );
+	cout << stepper.getName() << "\t";
 	stepper.printStates();	
 }
 
@@ -40,14 +42,16 @@ int main()
 {
 	int nStates = 1;
 
-	if ( 1 ){
-		rk4Stepper stepper3( nStates, f );
-		runSimulation( stepper3 );
-	}else{
-		abmStepper stepper1( nStates, f );
-		runSimulation( stepper1 );
-	}
+	rk4Stepper stepper3( nStates, f );
+	runSimulation( stepper3 );
+
+	abmStepper stepper1( nStates, f );
+	runSimulation( stepper1 );
+
 	bdfStepper stepper2( nStates, f );
 	runSimulation( stepper2 );
+
+	eulerStepper stepper4( nStates, f );
+	runSimulation( stepper4 );
 
 }

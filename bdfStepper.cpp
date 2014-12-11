@@ -20,6 +20,6 @@ protected:
 public:
 
 	bdfStepper( unsigned int nStates, rhs_type f ) : 
-		multiStepper( nStates, 4, f ){};
+		multiStepper( nStates, 4, f , 2 , "bdf" ){};
 
 };
