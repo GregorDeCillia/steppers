@@ -1,5 +1,12 @@
 ## Base class for Linear Multistep Methods
 
+### Constructor
+
+``` cpp
+multiStepper( unsigned int nStates, int ord, rhs_type f, int nCorrSteps, string name )
+
+```
+
 ### Private Members
 
 Member | Function
@@ -9,10 +16,3 @@ Member | Function
 `int nCorrSteps` | number of corretor steps
 `rk4Stepper singleStepper_` | if `buffer_index_ < buffer_size_`, the integration has to be done with a single step method.
 `void predictor(), corrector()` | the main parts of the predictor corrector method.
-
-### Constructor
-
-``` cpp
-multiStepper( unsigned int nStates, int ord, rhs_type f, int nCorrSteps, string name )
-
-```
