@@ -5,8 +5,6 @@
 #include "typedefs.h"
 #include "stepperBase/stepperBase.h"
 
-using namespace std;
-
 class eulerStepper: public stepper
 {
 public:

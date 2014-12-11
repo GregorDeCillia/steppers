@@ -3,6 +3,7 @@
 #include "bdfStepper.cpp"
 #include "rk4Stepper.cpp"
 #include "eulerStepper.cpp"
+#include "ode45Stepper.cpp"
 
 template <class STEPPERTYPE>
 void runSimulation( STEPPERTYPE stepper, 
@@ -18,7 +19,7 @@ void runSimulation( STEPPERTYPE stepper,
 	}
 	stepper.getStates( t, x );
 	stepper.setStates( t - 1, x - x0*exp(1) );
-	cout << stepper.getName() << "\t";
+	std::cout << stepper.getName() << "\t";
 	stepper.printStates();	
 }
 
@@ -37,7 +38,6 @@ state_type f(time_type t, state_type x)
 	return( x );
 } 
 
-
 int main()
 {
 	int nStates = 1;
@@ -53,5 +53,8 @@ int main()
 
 	eulerStepper stepper4( nStates, f );
 	runSimulation( stepper4 );
+
+	ode45Stepper stepper5( nStates, f );
+	runSimulation( stepper5 );
 
 }
