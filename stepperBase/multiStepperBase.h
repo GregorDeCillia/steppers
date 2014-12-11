@@ -2,7 +2,7 @@
 
 #include "../typedefs.h"
 #include "stepperBase.h"
-#include "../rk4Stepper.cpp"
+#include "../ode45Stepper.cpp"
 
 #include <boost/format.hpp>
 #include <iostream>
@@ -16,10 +16,10 @@ protected:
   int nCorrSteps_;
 
 
-  rk4Stepper singleStepper_;
+  ode45Stepper singleStepper_;
 
-virtual void predictor() = 0;
-virtual void corrector() = 0;
+  virtual void predictor() = 0;
+  virtual void corrector() = 0;
 
 public:
 

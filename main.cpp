@@ -1,7 +1,6 @@
 #include "typedefs.h"
 #include "abmStepper.cpp"
 #include "bdfStepper.cpp"
-#include "rk4Stepper.cpp"
 #include "eulerStepper.cpp"
 #include "ode45Stepper.cpp"
 
@@ -42,19 +41,16 @@ int main()
 {
 	int nStates = 1;
 
-	rk4Stepper stepper3( nStates, f );
-	runSimulation( stepper3 );
-
-	abmStepper stepper1( nStates, f );
+	ode45Stepper stepper1( nStates, f );
 	runSimulation( stepper1 );
 
-	bdfStepper stepper2( nStates, f );
+	abmStepper stepper2( nStates, f );
 	runSimulation( stepper2 );
+
+	bdfStepper stepper3( nStates, f );
+	runSimulation( stepper3 );
 
 	eulerStepper stepper4( nStates, f );
 	runSimulation( stepper4 );
-
-	ode45Stepper stepper5( nStates, f );
-	runSimulation( stepper5 );
 
 }
