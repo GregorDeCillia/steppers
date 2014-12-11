@@ -4,6 +4,7 @@
 
 #include "typedefs.h"
 #include "stepperBase/stepperBase.h"
+#include "rk4Stepper.cpp"
 
 #include <boost/numeric/ublas/io.hpp>
 
@@ -15,27 +16,17 @@ private:
 	buffer_type buffer_;
 	int buffer_index_;
 
-	state_type f(time_type t, state_type x){
-		value_type k = 100;
-		return( x ); 
-	}
-
-	void rk4step( time_type h ){
-		deriv_type k1 = dx_;
-		deriv_type k2 = f ( t_ + h/2.0 , x_ + k1*h/2.0 );
-		deriv_type k3 = f ( t_ + h/2.0 , x_ + k2*h/2.0 );
-		deriv_type k4 = f ( t_ + h     , x_ + k3*h ); 
-		x_ = x_ + h/6.0*( k1 + 2.0*k2 + 2.0*k3 + k4 );
-		t_ = t_ + h;
-		dx_ = f( t_, x_ );
-	}
-	
+	rk4Stepper singleStepper_;
 
 public:
-	abmStepper( unsigned int nStates ) :
-		stepper( nStates ),
+
+	abmStepper( unsigned int nStates , rhs_type f) :
+		stepper( nStates, f ),
 		buffer_( 4 ),
-		buffer_index_( 0 ){
+		buffer_index_( 0 ),
+		singleStepper_( nStates, f )
+	{
+		ord_ = 4;
 	};
 
 	void printBuffer(){
@@ -52,14 +43,17 @@ public:
 
 
 	void doStep( time_type h ){
-		if ( h != h_ )
+		if ( h != h_ ){
 			buffer_index_ = 0;
-		h_ = h;
+			h_ = h;
+		}
 		if ( buffer_index_ < 4 )
 			{
-			rk4step( h );
-			buffer_.insert_element( buffer_index_,  dx_ );
-			buffer_index_++;
+				singleStepper_.setStates( t_, x_ );
+				singleStepper_.doStep( h );
+				singleStepper_.getStates( t_, x_ );
+				buffer_.insert_element( buffer_index_,  f( t_, x_ ) );
+				buffer_index_++;
 			}
 		else{
 			// calculate the predictor

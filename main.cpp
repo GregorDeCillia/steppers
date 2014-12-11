@@ -5,6 +5,7 @@
 #include "typedefs.h"
 #include "abmStepper.cpp"
 #include "bdfStepper.cpp"
+#include "rk4Stepper.cpp"
 
 using namespace std;
 
@@ -35,20 +36,26 @@ void runSimulation( STEPPERTYPE stepper,
 
 }
 
+state_type f(time_type t, state_type x)
+{
+	return( x );
+} 
+
 
 int main()
 {
-	int nStates = 1;
-	
-	cout << "SIMULATION ERRORS" << endl;
+	int nStates = 1;  
 
-	abmStepper abmStepper( nStates );
-	abmStepper.printLabels();
+	state_type x0( 1 );
+	x0[0] = 1; 
+	time_type t0 = 0;
+
+	abmStepper abmStepper( nStates, f );
 	runSimulation( abmStepper );
 
-	bdfStepper bdfStepper( nStates );
+	bdfStepper bdfStepper( nStates, f );
 	runSimulation( bdfStepper );
 
-	rk4Stepper rk4Stepper( nStates );
+	rk4Stepper rk4Stepper( nStates, f );
 	runSimulation( rk4Stepper );
 }

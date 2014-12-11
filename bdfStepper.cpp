@@ -1,3 +1,5 @@
+#pragma once
+
 #include <boost/numeric/odeint.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/format.hpp>
@@ -15,21 +17,14 @@ private:
 	buffer_type buffer_;
 	int buffer_index_;
 
-	// the rhs of the ode, later this member will be set by
-	// the cunstructor
-	state_type f( time_type t, state_type x ){
-		value_type k = 100;
-		return( x ); 
-	}
-
 	rk4Stepper singleStepper_;
 
 public:
-	bdfStepper( unsigned int nStates ) : 
-		stepper( nStates ),
+	bdfStepper( unsigned int nStates, rhs_type f ) : 
+		stepper( nStates, f ),
 		buffer_( 4 ),
 		buffer_index_( 0 ),
-		singleStepper_( nStates )
+		singleStepper_( nStates, f )
 	{
 		ord_ = 4;
 	};

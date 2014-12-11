@@ -11,12 +11,14 @@ class stepper{
 	state_type x_;
 	state_type dx_;
 
-
-	virtual state_type f( time_type t, state_type x ) = 0;
+	rhs_type f;
 
  public:
 
- stepper( int nStates ) : ord_(1), nStates_( nStates ){};
+	stepper( int nStates, rhs_type f ) : 
+	ord_( 1 ), 
+		nStates_( nStates ), 
+		f( f ) {};
 
 	void getStates( time_type &t, state_type &x ){
 		t = t_;
@@ -43,7 +45,7 @@ class stepper{
 			}
 		t_ = t;
 		x_ = x;
-		dx_ = f( t_, x_);
+		dx_ = ( *f )( t_, x_);
 		clearBuffers();
 	}
 
