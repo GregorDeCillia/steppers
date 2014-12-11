@@ -1,5 +1,5 @@
-#include <boost/numeric/odeint.hpp>
-#include <boost/numeric/ublas/vector.hpp>
+#pragma once
+
 #include <boost/format.hpp>
 
 #include "typedefs.h"
@@ -7,8 +7,6 @@
 #include "rk4Stepper.cpp"
 
 #include <boost/numeric/ublas/io.hpp>
-
-using namespace boost::numeric::ublas;
 
 class abmStepper: public stepper
 {

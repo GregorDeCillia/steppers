@@ -1,15 +1,10 @@
 #pragma once
 
-#include <boost/numeric/odeint.hpp>
-#include <boost/numeric/ublas/vector.hpp>
 #include <boost/format.hpp>
 
-#include <boost/numeric/ublas/io.hpp>
 #include "typedefs.h"
 #include "stepperBase/stepperBase.h"
 #include "rk4Stepper.cpp"
-
-using namespace boost::numeric::ublas;
 
 class bdfStepper: public stepper
 {

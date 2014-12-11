@@ -1,13 +1,7 @@
-#include <boost/numeric/odeint.hpp>
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/format.hpp>
-
 #include "typedefs.h"
 #include "abmStepper.cpp"
 #include "bdfStepper.cpp"
 #include "rk4Stepper.cpp"
-
-using namespace std;
 
 template <class STEPPERTYPE>
 void runSimulation( STEPPERTYPE stepper, 
