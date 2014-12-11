@@ -26,5 +26,7 @@ public:
 		t_ = t_ + h;
 		dx_ = f( t_, x_ );
 	}
+
+	void clearBuffers(){}
 };
 

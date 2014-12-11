@@ -38,18 +38,16 @@ state_type f(time_type t, state_type x)
 
 int main()
 {
-	int nStates = 1;  
+	int nStates = 1;
 
-	state_type x0( 1 );
-	x0[0] = 1; 
-	time_type t0 = 0;
+	if ( 1 ){
+		rk4Stepper stepper3( nStates, f );
+		runSimulation( stepper3 );
+	}else{
+		abmStepper stepper1( nStates, f );
+		runSimulation( stepper1 );
+	}
+	bdfStepper stepper2( nStates, f );
+	runSimulation( stepper2 );
 
-	abmStepper abmStepper( nStates, f );
-	runSimulation( abmStepper );
-
-	bdfStepper bdfStepper( nStates, f );
-	runSimulation( bdfStepper );
-
-	rk4Stepper rk4Stepper( nStates, f );
-	runSimulation( rk4Stepper );
 }

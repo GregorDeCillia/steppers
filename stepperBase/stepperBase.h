@@ -17,7 +17,6 @@ class stepper{
  public:
 
 	stepper( int nStates, rhs_type f ) : 
-	ord_( 1 ), 
 		nStates_( nStates ), 
 		f( f ) {};
 
@@ -58,6 +57,6 @@ class stepper{
 		std::cout << std::endl;
 	}	
 
-	virtual void clearBuffers(){};
+	virtual void clearBuffers() = 0;
 	virtual void doStep( time_type h ) = 0;
 };
