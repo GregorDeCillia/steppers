@@ -67,7 +67,7 @@ stepper( int nStates, rhs_type f , int ord , string name ) : ord_(ord),
 		std::cout << std::endl;
 	}
 
-	void setRHS( rhs_type rhs ){
+	virtual void setRHS( rhs_type rhs ){
 		f = rhs;
 	}
 
