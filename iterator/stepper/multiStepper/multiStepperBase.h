@@ -21,6 +21,13 @@ protected:
   corrector* corrector_;
   rkStepper* singleStepper_;
 
+  void clearBuffers(){
+	  buffer_index_ = 0;
+	  buffer_x_.insert_element( buffer_index_,  x_ );
+	  buffer_dx_.insert_element( buffer_index_,  f_( t_, x_ ) );
+	  buffer_index_++;
+  }
+
 public:
 
   ~multiStepper(){
@@ -72,14 +79,6 @@ public:
 			std::cout << std::endl;		
 		}
 
-	void clearBuffers(){
-		buffer_index_ = 0;
-		buffer_x_.insert_element( buffer_index_,  x_ );
-		buffer_dx_.insert_element( buffer_index_,  f_( t_, x_ ) );
-		buffer_index_++;
-	}
-
-
 	void setStates( time_type t, state_type x ){
 		if ( t == t_ )
 			{
@@ -100,6 +99,7 @@ public:
 		singleStepper_->setRHS( rhs );
 		predictor_->setRHS( rhs );
 		corrector_->setRHS( rhs );
+		clearBuffers();
 	}
 
 	void doStep( time_type h ){

@@ -15,7 +15,7 @@ Argument | Meaning
 `ord` | order of convergence for the program
 `name` | name of the solver
 
-### Virtual functions
+### Pure virtual functions
 Name | Purpose
 --- | ----
 `void doStep( h )` | performs a step of size h
@@ -27,4 +27,3 @@ Name | Purpose
 `printStates()` | prints the states to the console using `std::cout << boost::format`
 `setStates( t, x )` | update the states of the stepper
 `printLabels()` | generates a row `t    x1    x2` wich fits the format of printStates
-`getName()` | returns the name of the stepper as string
