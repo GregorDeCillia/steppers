@@ -12,7 +12,7 @@ class abmStepper: public multiStepper
 public:
 
 	abmStepper( unsigned int nStates , rhs_type f ) :
-		multiStepper( nStates, 4, f , 2, "abm",
+		multiStepper( nStates, 4, f , 1, "abm",
 			              new abmPredictor( f ),
 			              new abmCorrector( f ),
 			              new fehlbergStepper( nStates, f )

@@ -48,7 +48,14 @@ public:
 				  singleStepper_->getName() <<
 				  " has a lower order than the multistepmethod " << name
 			            << " it is part of." << std::endl;
-	                            };
+		  /*
+		  if ( predictor_->getOrder() > corrector_->getOrder() ){
+			  std::cout << "Warning: your predictor is more accurate than your "
+			            << "corrector. Setting nCorrSteps to 0" << endl;
+			  nCorrSteps_ = 0;
+		  }
+		  */
+	  }
 
 	void printBuffer(){
 		std::cout << boost::format( "%-15E" ) % t_;

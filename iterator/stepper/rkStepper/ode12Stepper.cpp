@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../include/assigner.hpp"
+#include "../../../include/assigner.hpp"
 #include "rkStepperBase.h"
 
 class ode12Stepper: public rkStepper
