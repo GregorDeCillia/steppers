@@ -17,9 +17,7 @@ void runSimulation( STEPPERTYPE stepper,
 		stepper.doStep( 1.0/nSteps );
 	}
 	stepper.getStates( t, x );
-	stepper.setStates( t - 1, x - x0*exp(1) );
-	std::cout << stepper.getName() << "\t";
-	stepper.printStates();	
+	stepper.printStates( t - 1, x - x0*exp(1) , true );	
 }
 
 template <class STEPPERTYPE>

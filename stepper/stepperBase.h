@@ -37,15 +37,21 @@ stepper( int nStates, rhs_type f , int ord , string name ) : ord_(ord),
 	string getName(){
 		return  name_;
 	}
- 
-	void printStates(){
-		std::cout << boost::format( "%-15E" ) % t_;
+
+	void printStates( time_type t, state_type x, bool printName = false )
+	{
+		if ( printName )
+			std::cout << boost::format( "%-15s" ) % name_;
+		std::cout << boost::format( "%-15E" ) % t;
 		for ( unsigned int i = 0; i < nStates_; i++ ){
-			std::cout << boost::format( "%-15E" ) % x_[i];
+			std::cout << boost::format( "%-15E" ) % x[i];
 		}
 		std::cout << std::endl;
 	}
 
+	void printStates(){
+		printStates( t_, x_ );
+	}
 
 	void setStates( time_type t, state_type x ){
 		t_ = t;
