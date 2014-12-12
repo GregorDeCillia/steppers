@@ -6,6 +6,9 @@
 #include <boost/format.hpp>
 #include <iostream>
 
+#include "predictor/predictorBase.h"
+#include "corrector/correctorBase.h"
+
 class multiStepper : public stepper
 {
 protected:
@@ -14,26 +17,31 @@ protected:
   int buffer_index_;
   int nCorrSteps_;
 
+  predictor* predictor_;
+  corrector* corrector_;
 
   ode45Stepper singleStepper_;
-
-  virtual void predictor() = 0;
-  virtual void corrector() = 0;
 
 public:
 
 multiStepper( unsigned int nStates, int ord, rhs_type f,
-	              int nCorrSteps, string name ) : stepper( nStates, f , ord , name ),
-	buffer_x_( ord ),
-	buffer_dx_( ord ),
-	buffer_index_( 0 ),
-	singleStepper_( nStates, f ),
-	nCorrSteps_( nCorrSteps )
-	              {
-	                            if ( singleStepper_.getOrder() < ord )
-		                            std::cout << "Warning: The singlestepmethod " <<
-			                            singleStepper_.getName() <<
-			                            " has a lower order than the multistepmethod " << name << " it is part of." << std::endl;
+              int nCorrSteps, string name,
+              predictor* predictor,
+              corrector* corrector
+              ) : stepper( nStates, f , ord , name ),
+	  buffer_x_( ord ),
+	  buffer_dx_( ord ),
+	  buffer_index_( 0 ),
+	  singleStepper_( nStates, f ),
+	  nCorrSteps_( nCorrSteps )
+	  ,predictor_( predictor ),
+	  corrector_( corrector )
+	  {
+		  if ( singleStepper_.getOrder() < ord )
+			  std::cout << "Warning: The singlestepmethod " <<
+				  singleStepper_.getName() <<
+				  " has a lower order than the multistepmethod " << name
+			            << " it is part of." << std::endl;
 	                            };
 
 	void printBuffer(){
@@ -88,11 +96,11 @@ multiStepper( unsigned int nStates, int ord, rhs_type f,
 			}
 		else{
 			// calculate the predictor
-			predictor();
+			predictor_->predict( t_, x_, h_, buffer_x_, buffer_dx_ );
 
 			// make corrector steps
 			for( int i = 0; i < nCorrSteps_; i++ )
-				corrector();
+				corrector_->correct( t_, x_, h_, buffer_x_, buffer_dx_ );
 
 			// cycle the buffer and fill in the new value
 			buffer_x_[0]  = buffer_x_[1];
