@@ -8,6 +8,8 @@
 #include "stepper/rkStepper/threeEightStepper.cpp"
 #include "stepper/rkStepper/fehlbergStepper.cpp"
 
+#include <boost/numeric/ublas/io.hpp>
+
 static int p = 1;
 
 static state_type f2( time_type t, state_type x )
@@ -64,6 +66,69 @@ void runSimulation( stepper* stepper,
 }
 
 
+int convergenceOrder( predictor* predictor )
+{
+	state_type x0( 1 ), x( 1 );
+	time_type t0 = 0, t=0;
+	x0[0] = 1;
+	x[0] = 0;
+	predictor->setRHS( f2 );
+
+	bool stepperFailed = false;
+	p = 0;
+	buffer_type buff_x_(4);
+	buffer_type buff_dx_(4);
+
+	while ( !stepperFailed && p<10 ){
+		for ( int i  = 0; i < 4; i++ ){
+			buff_x_[3-i]=x0*pow(-i,p+1.0)/(p+1.0);
+			buff_dx_[3-i]=x0*pow(-i,p);
+		}
+		predictor->predict( t, x, 1, buff_x_, buff_dx_ );
+		if ( fabs( x[0] - 1.0/(1.0+p) ) > pow( 2, -10 ) ){
+			stepperFailed = true;
+		}
+		p++;
+	}
+
+	std::cout << predictor->getName() << "\t" << p-1 << std::endl;
+	return( p - 1 );
+}
+
+int convergenceOrder( corrector* corrector )
+{
+	state_type x0( 1 ), x( 1 ), x2(1);
+	time_type t0 = 0, t=1;
+	x0[0] = 1;
+	x2[0] = 7;
+	x[0] = 1/2;
+	corrector->setRHS( f2 );
+
+	bool stepperFailed = false;
+	p = 0;
+	buffer_type buff_x_(4);
+	buffer_type buff_dx_(4);
+
+	while ( !stepperFailed && p<10 ){
+		x = x2;
+		for ( int i  = 0; i < 4; i++ ){
+			buff_x_[3-i]=x0*pow(-i,p+1.0)/(p+1.0);
+			buff_dx_[3-i]=x0*pow(-i,p);
+		}
+		for ( int j = 0; j < 8; j++){
+			corrector->correct( t, x, 1, buff_x_, buff_dx_ );
+		}
+		if ( fabs( x[0] - 1.0/(1.0+p) ) > pow( 2, -10 ) ){
+			stepperFailed = true;
+		}
+		p++;
+	}
+
+	std::cout << corrector->getName() << "\t" << p-1 << std::endl;
+	return( p - 1 );
+}
+
+
 state_type f(time_type t, state_type x)
 {
 	return( x );
@@ -79,5 +144,10 @@ int main()
 	runSimulation( new ode12Stepper( nStates, f ) );
 	runSimulation( new ode23Stepper( nStates, f ) );
 	runSimulation( new ode34Stepper( nStates, f ) );
+
+	convergenceOrder( new abmPredictor( f ) );
+	convergenceOrder( new bdfPredictor( f ) );
+	convergenceOrder( new abmCorrector( f ) );
+	convergenceOrder( new bdfCorrector( f ) );
 
 }
