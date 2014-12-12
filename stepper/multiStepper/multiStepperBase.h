@@ -84,6 +84,8 @@ public:
 	void setRHS( rhs_type rhs ){
 		f = rhs;
 		singleStepper_->setRHS( rhs );
+		predictor_->setRHS( rhs );
+		corrector_->setRHS( rhs );
 	}
 
 	void doStep( time_type h ){

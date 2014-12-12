@@ -129,6 +129,35 @@ int convergenceOrder( corrector* corrector )
 }
 
 
+int convergenceOrder( multiStepper* multiStepper )
+{
+	state_type x0( 1 ), x( 1 );
+	x0[0] = 0;
+	x = x0;
+	time_type t0 = 0;
+	time_type t;
+	multiStepper->setRHS( f2 );
+	p = 0;
+
+	bool stepperFailed = false;
+
+	while( p<10 && !stepperFailed ){
+		multiStepper->setStates( t0, x0 );
+		for ( int i = 0; i < 6; i++ )
+			{
+				multiStepper->doStep( 1 );
+				multiStepper->getStates( t, x );
+				if ( fabs( x[0] - pow( t, 1.0 + p )/( 1.0 + p ) ) > pow( 2, -10 ) ){
+					stepperFailed = true;
+				}
+			}
+		p++;
+	}
+	std::cout << multiStepper->getName() << "\t" << p - 1 << std::endl;
+	return ( p - 1 );
+}
+
+
 state_type f(time_type t, state_type x)
 {
 	return( x );
@@ -149,5 +178,8 @@ int main()
 	convergenceOrder( new bdfPredictor( f ) );
 	convergenceOrder( new abmCorrector( f ) );
 	convergenceOrder( new bdfCorrector( f ) );
+
+	convergenceOrder( new bdfStepper( nStates, f ) );
+	convergenceOrder( new abmStepper( nStates, f ) );
 
 }
