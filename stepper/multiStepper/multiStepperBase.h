@@ -23,12 +23,18 @@ protected:
 
 public:
 
-multiStepper( unsigned int nStates, int ord, rhs_type f,
-              int nCorrSteps, string name,
-              predictor* predictor,
-              corrector* corrector,
-              rkStepper* singleStepper
-              ) : stepper( nStates, f , ord , name ),
+  ~multiStepper(){
+	  delete predictor_;
+	  delete corrector_;
+	  delete singleStepper_;
+  }
+
+ multiStepper( unsigned int nStates, int ord, rhs_type f,
+               int nCorrSteps, string name,
+               predictor* predictor,
+               corrector* corrector,
+               rkStepper* singleStepper
+               ) : stepper( nStates , f, ord , name ),
 	  buffer_x_( ord ),
 	  buffer_dx_( ord ),
 	  buffer_index_( 0 ),
