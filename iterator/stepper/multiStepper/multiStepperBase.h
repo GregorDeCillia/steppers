@@ -48,13 +48,20 @@ public:
 				  singleStepper_->getName() <<
 				  " has a lower order than the multistepmethod " << name
 			            << " it is part of." << std::endl;
-		  /*
-		  if ( predictor_->getOrder() > corrector_->getOrder() ){
-			  std::cout << "Warning: your predictor is more accurate than your "
-			            << "corrector. Setting nCorrSteps to 0" << endl;
+		  
+		  if ( predictor_->getOrder() >= corrector_->getOrder() ){
+			  std::cout << "Warning: your predictor is at least as accurate" 
+			            << " as your corrector. Setting nCorrSteps to 0"
+			            << std::endl;
 			  nCorrSteps_ = 0;
 		  }
-		  */
+
+		  if ( corrector_->getOrder() - predictor_->getOrder() != nCorrSteps_ )
+			  std::cout << "wrong nuber of corrector steps in " 
+			            << getName() << ": " << std::endl 
+			            << "predictor Order" << predictor_->getOrder() << std::endl
+			            << "corrector Order" << corrector_->getOrder() << std::endl
+			            << "corrector Steps" << nCorrSteps_ << std::endl;		  
 	  }
 
 	void printBuffer(){
@@ -68,7 +75,7 @@ public:
 	void clearBuffers(){
 		buffer_index_ = 0;
 		buffer_x_.insert_element( buffer_index_,  x_ );
-		buffer_dx_.insert_element( buffer_index_,  f( t_, x_ ) );
+		buffer_dx_.insert_element( buffer_index_,  f_( t_, x_ ) );
 		buffer_index_++;
 	}
 
@@ -84,12 +91,12 @@ public:
 			}
 		t_ = t;
 		x_ = x;
-		dx_ = ( *f )( t_, x_);
+		dx_ = f_( t_, x_);
         clearBuffers();
 	}
 
 	void setRHS( rhs_type rhs ){
-		f = rhs;
+		f_ = rhs;
 		singleStepper_->setRHS( rhs );
 		predictor_->setRHS( rhs );
 		corrector_->setRHS( rhs );
@@ -106,7 +113,7 @@ public:
 				singleStepper_->doStep( h );
 				singleStepper_->getStates( t_, x_ );
 				buffer_x_.insert_element( buffer_index_,  x_ );
-				buffer_dx_.insert_element( buffer_index_,  f( t_, x_ ) );
+				buffer_dx_.insert_element( buffer_index_,  f_( t_, x_ ) );
 				buffer_index_++;
 			}
 		else{
@@ -126,7 +133,7 @@ public:
 			buffer_dx_[0] = buffer_dx_[1];
 			buffer_dx_[1] = buffer_dx_[2];
 			buffer_dx_[2] = buffer_dx_[3];
-			buffer_dx_[3] = f( t_, x_ );
+			buffer_dx_[3] = f_( t_, x_ );
 
 			dx_           = buffer_dx_[3];
 

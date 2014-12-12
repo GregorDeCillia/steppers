@@ -39,13 +39,13 @@ class rkStepper: public stepper
 		};		
 
 	void doStep( time_type h ){
-		k_[0] = f( t_, x_ );
+		k_[0] = f_( t_, x_ );
 		for ( int i = 1; i < ( butcher_size + 1 ); i++ ){
 			x2_ *= 0;
 			for ( int j = 0; j < i; j++ ){
 				x2_ += A(i-1,j) *k_[j];
 			}
-			k_[i] = f( t_ + h*c[i-1], x_+h*x2_ );
+			k_[i] = f_( t_ + h*c[i-1], x_+h*x2_ );
 		}
 		x2_ *= 0;
 		for ( int i = 0; i < butcher_size+1; i++ ){

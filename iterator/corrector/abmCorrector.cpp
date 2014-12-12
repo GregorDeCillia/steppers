@@ -6,7 +6,7 @@ class abmCorrector : public corrector
 {
 public:
 	abmCorrector( rhs_type f ) :
-		corrector( f, "abmCorr", 4 ){};
+		corrector( f, "abmCorr", 5 ){};
 
 	void correct( time_type &t, state_type &x, time_type h,
 	              buffer_type buffer_x, buffer_type buffer_dx )

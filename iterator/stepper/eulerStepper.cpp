@@ -2,8 +2,7 @@
 
 #include <boost/numeric/ublas/vector.hpp>
 
-#include "typedefs.h"
-#include "stepperBase/stepperBase.h"
+#include "stepperBase.h"
 
 class eulerStepper: public stepper
 {
@@ -15,7 +14,7 @@ public:
 	void doStep( time_type h ){
 		x_ += h*dx_;
 		t_ += h;
-		dx_ = f( t_, x_ );
+		dx_ = f_( t_, x_ );
 	}
 
 };

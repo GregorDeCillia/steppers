@@ -1,41 +1,28 @@
 #pragma once
 
-#include "../../include/typedefs.h"
+#include "../iteratorBase.h"
 #include <boost/format.hpp>
 
-class stepper{
+class stepper : public iterator{
 
 protected:
-    int ord_;
-    string name_;
     unsigned int nStates_;
 	time_type h_;
 	time_type t_;
 	state_type x_;
 	state_type dx_;
 
-	rhs_type f;
-
 public:
 
-stepper( int nStates, rhs_type f , int ord , string name ) : ord_(ord),
-		name_( name ),
+stepper( int nStates, rhs_type f , int ord , string name ) : 
+	iterator( f, name, ord ),
 		nStates_( nStates ),
 		x_( nStates ),
-		dx_( nStates ),
-		f( f ) {};
+		dx_( nStates ){};
 
 	void getStates( time_type &t, state_type &x ){
 		t = t_;
 		x = x_;
-	}
-
-	int getOrder(){
-		return ord_;
-	}
-
-	string getName(){
-		return  name_;
 	}
 
 	void printStates( time_type t, state_type x, bool printName = false )
@@ -56,7 +43,7 @@ stepper( int nStates, rhs_type f , int ord , string name ) : ord_(ord),
 	virtual void setStates( time_type t, state_type x ){
 		t_ = t;
 		x_ = x;
-		dx_ = f( t_, x_);
+		dx_ = f_( t_, x_);
 	}
 
 	void printLabels(){
@@ -65,10 +52,6 @@ stepper( int nStates, rhs_type f , int ord , string name ) : ord_(ord),
 			std::cout << boost::format( "%-1s%-14i" ) % "x" % i;
 		}
 		std::cout << std::endl;
-	}
-
-	virtual void setRHS( rhs_type rhs ){
-		f = rhs;
 	}
 
 	virtual void doStep( time_type h ) = 0;

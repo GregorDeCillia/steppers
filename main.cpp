@@ -8,6 +8,8 @@
 #include "iterator/stepper/rkStepper/threeEightStepper.cpp"
 #include "iterator/stepper/rkStepper/fehlbergStepper.cpp"
 
+#include "iterator/stepper/eulerStepper.cpp"
+
 #include <boost/numeric/ublas/io.hpp>
 
 static int p = 1;
@@ -37,6 +39,13 @@ int convergenceOrder( stepper* stepper )
 		}
 		p++;
 	}
+
+	if ( p-1 != stepper->getOrder() )
+		{			
+			std::cout << "wrong order specified for " << stepper->getName()
+			          << std::endl;
+		}
+
 	return( p - 1 );
 }
 
@@ -93,6 +102,13 @@ int convergenceOrder( predictor* predictor )
 
 	std::cout << predictor->getName() << "\t" << p-1 << std::endl;
 	return( p - 1 );
+
+	if ( p-1 != predictor->getOrder() )
+		{			
+			std::cout << "wrong order specified for " << predictor->getName()
+			          <<  std::endl;
+		}
+
 }
 
 int convergenceOrder( corrector* corrector )
@@ -125,6 +141,13 @@ int convergenceOrder( corrector* corrector )
 	}
 
 	std::cout << corrector->getName() << "\t" << p-1 << std::endl;
+
+	if ( p-1 != corrector->getOrder() )
+		{			
+			std::cout << "wrong order specified for " << corrector->getName()
+			          <<  std::endl;
+		}
+
 	return( p - 1 );
 }
 
@@ -154,6 +177,11 @@ int convergenceOrder( multiStepper* multiStepper )
 		p++;
 	}
 	std::cout << multiStepper->getName() << "\t" << p - 1 << std::endl;
+	if ( p-1 != multiStepper->getOrder() )
+		{			
+			std::cout << "wrong order specified for " << multiStepper->getName()
+			          <<  std::endl;
+		}
 	return ( p - 1 );
 }
 
@@ -190,5 +218,5 @@ int main()
 	// convergence order for multistep methods
 	convergenceOrder( new bdfStepper( nStates, f ) );
 	convergenceOrder( new abmStepper( nStates, f ) );
-
+	
 }
