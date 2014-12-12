@@ -67,6 +67,10 @@ multiStepper( unsigned int nStates, int ord, rhs_type f,
         clearBuffers();
 	}
 
+	void setRHS( rhs_type rhs ){
+		f = rhs;
+		singleStepper_.setRHS( rhs );
+	}
 
 	void doStep( time_type h ){
 		if ( h != h_ ){

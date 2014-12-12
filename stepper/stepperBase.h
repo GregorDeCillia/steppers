@@ -65,7 +65,11 @@ stepper( int nStates, rhs_type f , int ord , string name ) : ord_(ord),
 			std::cout << boost::format( "%-1s%-14i" ) % "x" % i;
 		}
 		std::cout << std::endl;
-	}	
+	}
+
+	void setRHS( rhs_type rhs ){
+		f = rhs;
+	}
 
 	virtual void doStep( time_type h ) = 0;
 };
