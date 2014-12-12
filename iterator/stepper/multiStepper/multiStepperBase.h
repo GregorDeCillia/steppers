@@ -6,8 +6,8 @@
 #include <boost/format.hpp>
 #include <iostream>
 
-#include "predictor/predictorBase.h"
-#include "corrector/correctorBase.h"
+#include "../../predictor/predictorBase.h"
+#include "../../corrector/correctorBase.h"
 
 class multiStepper : public stepper
 {

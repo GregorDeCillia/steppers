@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../include/typedefs.h"
+#include "../../include/typedefs.h"
 
 class predictor
 {
