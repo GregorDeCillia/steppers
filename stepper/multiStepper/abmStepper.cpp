@@ -11,8 +11,9 @@ public:
 
 	abmStepper( unsigned int nStates , rhs_type f ) :
 		multiStepper( nStates, 4, f , 2, "abm",
-		              new abmPredictor( f ),
-		              new abmCorrector( f )
+			              new abmPredictor( f ),
+			              new abmCorrector( f ),
+			              new ode45Stepper( nStates, f )
 		              ){};
 
 };

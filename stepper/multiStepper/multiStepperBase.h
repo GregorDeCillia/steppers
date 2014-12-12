@@ -19,27 +19,27 @@ protected:
 
   predictor* predictor_;
   corrector* corrector_;
-
-  ode45Stepper singleStepper_;
+  rkStepper* singleStepper_;
 
 public:
 
 multiStepper( unsigned int nStates, int ord, rhs_type f,
               int nCorrSteps, string name,
               predictor* predictor,
-              corrector* corrector
+              corrector* corrector,
+              rkStepper* singleStepper
               ) : stepper( nStates, f , ord , name ),
 	  buffer_x_( ord ),
 	  buffer_dx_( ord ),
 	  buffer_index_( 0 ),
-	  singleStepper_( nStates, f ),
-	  nCorrSteps_( nCorrSteps )
-	  ,predictor_( predictor ),
-	  corrector_( corrector )
+	  nCorrSteps_( nCorrSteps ),
+	  predictor_( predictor ),
+	  corrector_( corrector ),
+	  singleStepper_( singleStepper )
 	  {
-		  if ( singleStepper_.getOrder() < ord )
+		  if ( singleStepper_->getOrder() < ord )
 			  std::cout << "Warning: The singlestepmethod " <<
-				  singleStepper_.getName() <<
+				  singleStepper_->getName() <<
 				  " has a lower order than the multistepmethod " << name
 			            << " it is part of." << std::endl;
 	                            };
@@ -77,7 +77,7 @@ multiStepper( unsigned int nStates, int ord, rhs_type f,
 
 	void setRHS( rhs_type rhs ){
 		f = rhs;
-		singleStepper_.setRHS( rhs );
+		singleStepper_->setRHS( rhs );
 	}
 
 	void doStep( time_type h ){
@@ -87,9 +87,9 @@ multiStepper( unsigned int nStates, int ord, rhs_type f,
 		}
 		if ( buffer_index_ < 4 )
 			{
-				singleStepper_.setStates( t_, x_ );
-				singleStepper_.doStep( h );
-				singleStepper_.getStates( t_, x_ );
+				singleStepper_->setStates( t_, x_ );
+				singleStepper_->doStep( h );
+				singleStepper_->getStates( t_, x_ );
 				buffer_x_.insert_element( buffer_index_,  x_ );
 				buffer_dx_.insert_element( buffer_index_,  f( t_, x_ ) );
 				buffer_index_++;
