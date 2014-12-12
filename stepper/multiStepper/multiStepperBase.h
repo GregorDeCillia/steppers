@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../stepperBase.h"
-#include "../rkStepper/ode45Stepper.cpp"
+#include "../rkStepper/rkStepperBase.h"
 
 #include <boost/format.hpp>
 #include <iostream>

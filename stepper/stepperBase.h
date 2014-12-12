@@ -53,7 +53,7 @@ stepper( int nStates, rhs_type f , int ord , string name ) : ord_(ord),
 		printStates( t_, x_ );
 	}
 
-	void setStates( time_type t, state_type x ){
+	virtual void setStates( time_type t, state_type x ){
 		t_ = t;
 		x_ = x;
 		dx_ = f( t_, x_);

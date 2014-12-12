@@ -167,18 +167,27 @@ int main()
 {
 	int nStates = 1;
 	
+	// simulations
 	runSimulation( new ode45Stepper( nStates, f ) );
-	runSimulation( new abmStepper( nStates, f ) );
-	runSimulation( new bdfStepper( nStates, f )  );
 	runSimulation( new ode12Stepper( nStates, f ) );
 	runSimulation( new ode23Stepper( nStates, f ) );
 	runSimulation( new ode34Stepper( nStates, f ) );
 
+	runSimulation( new fehlbergStepper( nStates,f ) );
+	runSimulation( new threeEightStepper( nStates, f ) );
+
+	runSimulation( new abmStepper  ( nStates, f ) );
+	runSimulation( new bdfStepper  ( nStates, f ) );
+
+	// convergence orders of predictors and
+	// correctors
 	convergenceOrder( new abmPredictor( f ) );
 	convergenceOrder( new bdfPredictor( f ) );
+
 	convergenceOrder( new abmCorrector( f ) );
 	convergenceOrder( new bdfCorrector( f ) );
 
+	// convergence order for multistep methods
 	convergenceOrder( new bdfStepper( nStates, f ) );
 	convergenceOrder( new abmStepper( nStates, f ) );
 

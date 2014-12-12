@@ -1,8 +1,10 @@
 #pragma once
 
 #include "multiStepperBase.h"
+
 #include "predictor/abmPredictor.cpp"
 #include "corrector/abmCorrector.cpp"
+#include "../rkStepper/fehlbergStepper.cpp"
 
 class abmStepper: public multiStepper
 {
@@ -13,7 +15,7 @@ public:
 		multiStepper( nStates, 4, f , 2, "abm",
 			              new abmPredictor( f ),
 			              new abmCorrector( f ),
-			              new ode45Stepper( nStates, f )
+			              new fehlbergStepper( nStates, f )
 		              ){};
 
 };
