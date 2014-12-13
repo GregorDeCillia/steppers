@@ -6,7 +6,7 @@ class abmPredictor : public predictor
 {
 public:
 abmPredictor( rhs_type f ) :
-	predictor( f, "abmPred", 4 ){};
+	predictor( f, "abmPred", 4 , 4){};
 
 void predict( time_type &t_, state_type &x_, time_type h_, 
 	              buffer_type buffer_x_, buffer_type buffer_dx_ ){

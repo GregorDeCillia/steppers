@@ -6,7 +6,7 @@ class bdfPredictor : public predictor
 {
 public:
 	bdfPredictor( rhs_type f ) :
-		predictor( f, "bdfPred", 3 ){};
+		predictor( f, "bdfPred", 3 , 4 ){};
 
 	void predict( time_type &t_, state_type &x_, time_type h_, 
 	              buffer_type buffer_x_, buffer_type buffer_dx_ )

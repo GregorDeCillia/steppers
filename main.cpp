@@ -9,6 +9,9 @@
 #include "iterator/stepper/rkStepper/fehlbergStepper.cpp"
 
 #include "iterator/stepper/eulerStepper.cpp"
+#include "iterator/predictor/amPredictor/am2Predictor.cpp"
+#include "iterator/predictor/amPredictor/am3Predictor.cpp"
+#include "iterator/predictor/amPredictor/am5Predictor.cpp"
 
 #include <boost/numeric/ublas/io.hpp>
 
@@ -79,19 +82,20 @@ int convergenceOrder( predictor* predictor )
 {
 	state_type x0( 1 ), x( 1 );
 	time_type t0 = 0, t=0;
+	int buffer_size = predictor->getBufferSize();
 	x0[0] = 1;
 	x[0] = 0;
 	predictor->setRHS( f2 );
 
 	bool stepperFailed = false;
 	p = 0;
-	buffer_type buff_x_(4);
-	buffer_type buff_dx_(4);
+	buffer_type buff_x_( buffer_size );
+	buffer_type buff_dx_( buffer_size );
 
 	while ( !stepperFailed && p<10 ){
-		for ( int i  = 0; i < 4; i++ ){
-			buff_x_[3-i]=x0*pow(-i,p+1.0)/(p+1.0);
-			buff_dx_[3-i]=x0*pow(-i,p);
+		for ( int i  = 0; i < buffer_size; i++ ){
+			buff_x_[buffer_size-1-i]=x0*pow(-i,p+1.0)/(p+1.0);
+			buff_dx_[buffer_size-1-i]=x0*pow(-i,p);
 		}
 		predictor->predict( t, x, 1, buff_x_, buff_dx_ );
 		if ( fabs( x[0] - 1.0/(1.0+p) ) > pow( 2, -10 ) ){
@@ -218,5 +222,9 @@ int main()
 	// convergence order for multistep methods
 	convergenceOrder( new bdfStepper( nStates, f ) );
 	convergenceOrder( new abmStepper( nStates, f ) );
-	
+
+	convergenceOrder( new am2Predictor( f ) );
+	convergenceOrder( new am3Predictor( f ) );
+
+	convergenceOrder( new am5Predictor( f ) );
 }
