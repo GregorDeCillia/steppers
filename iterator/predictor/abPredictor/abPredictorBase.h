@@ -2,13 +2,13 @@
 
 #include "../predictorBase.h"
 
-class amPredictor : public predictor
+class abPredictor : public predictor
 {
  private:
 	vector<value_type> a_;
  public:
 
- amPredictor( rhs_type f , string name, int ord, vector<value_type> a ) :
+ abPredictor( rhs_type f , string name, int ord, vector<value_type> a ) :
 	predictor( f, name, ord, a.size() ),
 		a_(a){};
 

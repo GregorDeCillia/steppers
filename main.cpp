@@ -9,9 +9,9 @@
 #include "iterator/stepper/rkStepper/fehlbergStepper.cpp"
 
 #include "iterator/stepper/eulerStepper.cpp"
-#include "iterator/predictor/amPredictor/am2Predictor.cpp"
-#include "iterator/predictor/amPredictor/am3Predictor.cpp"
-#include "iterator/predictor/amPredictor/am5Predictor.cpp"
+#include "iterator/predictor/abPredictor/ab2Predictor.cpp"
+#include "iterator/predictor/abPredictor/ab3Predictor.cpp"
+#include "iterator/predictor/abPredictor/ab5Predictor.cpp"
 
 #include <boost/numeric/ublas/io.hpp>
 
@@ -216,10 +216,10 @@ int main()
 	// correctors
 	convergenceOrder( new bdfPredictor( f ) );
 
-	convergenceOrder( new am2Predictor( f ) );
-	convergenceOrder( new am3Predictor( f ) );
-	convergenceOrder( new am4Predictor( f ) );
-	convergenceOrder( new am5Predictor( f ) );
+	convergenceOrder( new ab2Predictor( f ) );
+	convergenceOrder( new ab3Predictor( f ) );
+	convergenceOrder( new ab4Predictor( f ) );
+	convergenceOrder( new ab5Predictor( f ) );
 
 
 	convergenceOrder( new abmCorrector( f ) );

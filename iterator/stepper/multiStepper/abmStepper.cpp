@@ -2,7 +2,7 @@
 
 #include "multiStepperBase.h"
 
-#include "../../predictor/amPredictor/am4Predictor.cpp"
+#include "../../predictor/abPredictor/ab4Predictor.cpp"
 #include "../../corrector/abmCorrector.cpp"
 #include "../rkStepper/fehlbergStepper.cpp"
 //#include "../rkStepper/ode45Stepper.cpp"
@@ -14,7 +14,7 @@ public:
 
 	abmStepper( unsigned int nStates , rhs_type f ) :
 		multiStepper( nStates, 5, f , 1, "abm",
-			              new am4Predictor( f ),
+			              new ab4Predictor( f ),
 			              new abmCorrector( f ),
 			              new fehlbergStepper( nStates, f )
 		              ){};

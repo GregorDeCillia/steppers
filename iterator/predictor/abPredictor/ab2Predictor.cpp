@@ -1,6 +1,6 @@
 #pragma once
 
-#include "amPredictorBase.h"
+#include "abPredictorBase.h"
 #include "../../../include/assigner.hpp"
 
 vector<value_type> getVector2(){
@@ -13,10 +13,10 @@ vector<value_type> getVector2(){
 }
 
 
-class am2Predictor : public amPredictor
+class ab2Predictor : public abPredictor
 {
 public:
-am2Predictor( rhs_type f ) :
-	amPredictor( f, "am2Pred", 2 , getVector2() ){};
+ab2Predictor( rhs_type f ) :
+	abPredictor( f, "ab2Pred", 2 , getVector2() ){};
 };
 
