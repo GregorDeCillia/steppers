@@ -213,8 +213,13 @@ int main()
 
 	// convergence orders of predictors and
 	// correctors
-	convergenceOrder( new abmPredictor( f ) );
 	convergenceOrder( new bdfPredictor( f ) );
+
+	convergenceOrder( new am2Predictor( f ) );
+	convergenceOrder( new am3Predictor( f ) );
+	convergenceOrder( new am4Predictor( f ) );
+	convergenceOrder( new am5Predictor( f ) );
+
 
 	convergenceOrder( new abmCorrector( f ) );
 	convergenceOrder( new bdfCorrector( f ) );
@@ -223,8 +228,4 @@ int main()
 	convergenceOrder( new bdfStepper( nStates, f ) );
 	convergenceOrder( new abmStepper( nStates, f ) );
 
-	convergenceOrder( new am2Predictor( f ) );
-	convergenceOrder( new am3Predictor( f ) );
-
-	convergenceOrder( new am5Predictor( f ) );
 }

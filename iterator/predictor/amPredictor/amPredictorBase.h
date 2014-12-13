@@ -20,6 +20,7 @@ class amPredictor : public predictor
 			dx += a_[i]*buffer_dx_[i];
 		}
 		x_ = buffer_x_[buffer_size-1] + h_*dx;
+		t_+=h_;
 	}
 
 };
