@@ -16,6 +16,7 @@ protected:
   buffer_type buffer_dx_;
   int buffer_index_;
   int nCorrSteps_;
+  int buffer_size_;
 
   predictor* predictor_;
   corrector* corrector_;
@@ -46,6 +47,7 @@ public:
 	  buffer_dx_( ord ),
 	  buffer_index_( 0 ),
 	  nCorrSteps_( nCorrSteps ),
+	  buffer_size_( 4 ),
 	  predictor_( predictor ),
 	  corrector_( corrector ),
 	  singleStepper_( singleStepper )
@@ -125,6 +127,15 @@ public:
 				corrector_->correct( t_, x_, h_, buffer_x_, buffer_dx_ );
 
 			// cycle the buffer and fill in the new value
+			for ( int i = 0; i < buffer_size_-1; i++ ){
+				buffer_x_[i]  = buffer_x_[i+1];
+				buffer_dx_[i] = buffer_dx_[i+1];
+			}
+			buffer_x_[buffer_size_-1]=x_;
+			buffer_dx_[buffer_size_-1]=f_(t_,x_);
+			dx_ = buffer_dx_[buffer_size_-1];
+			/*
+
 			buffer_x_[0]  = buffer_x_[1];
 			buffer_x_[1]  = buffer_x_[2];
 			buffer_x_[2]  = buffer_x_[3];
@@ -136,7 +147,7 @@ public:
 			buffer_dx_[3] = f_( t_, x_ );
 
 			dx_           = buffer_dx_[3];
-
+			*/
 		}
 	}
 
