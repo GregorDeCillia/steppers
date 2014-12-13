@@ -22,5 +22,4 @@ class abPredictor : public predictor
 		x_ = buffer_x_[0] + h_*dx;
 		t_+=h_;
 	}
-
 };
