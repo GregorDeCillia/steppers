@@ -6,8 +6,8 @@
 vector<value_type> getVector2(){
 	vector<value_type> a(2);
 
-	a[1] = 3.0/2.0;
-	a[0] =  -1.0/2.0;
+	a[0] = 3.0/2.0;
+	a[1] =  -1.0/2.0;
 
 	return a;       
 }

@@ -19,7 +19,7 @@ class amPredictor : public predictor
 		for ( int i = 0; i < buffer_size; i++ ){
 			dx += a_[i]*buffer_dx_[i];
 		}
-		x_ = buffer_x_[buffer_size-1] + h_*dx;
+		x_ = buffer_x_[0] + h_*dx;
 		t_+=h_;
 	}
 

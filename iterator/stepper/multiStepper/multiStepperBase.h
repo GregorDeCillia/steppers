@@ -23,10 +23,10 @@ protected:
   rkStepper* singleStepper_;
 
   void clearBuffers(){
-	  buffer_index_ = 0;
+	  buffer_index_ = buffer_size_-1;
 	  buffer_x_.insert_element( buffer_index_,  x_ );
 	  buffer_dx_.insert_element( buffer_index_,  f_( t_, x_ ) );
-	  buffer_index_++;
+	  buffer_index_--;
   }
 
 public:
@@ -45,7 +45,7 @@ public:
                ) : stepper( nStates , f, ord , name ),
 	  buffer_x_( ord ),
 	  buffer_dx_( ord ),
-	  buffer_index_( 0 ),
+	  buffer_index_( 4-1 ),
 	  nCorrSteps_( nCorrSteps ),
 	  buffer_size_( 4 ),
 	  predictor_( predictor ),
@@ -105,18 +105,19 @@ public:
 	}
 
 	void doStep( time_type h ){
+		//std::cout << "do step. Buffer Index: " << buffer_index_ << std::endl;
 		if ( h != h_ ){
-			buffer_index_ = 0;
+			clearBuffers();
 			h_ = h;
 		}
-		if ( buffer_index_ < 4 )
+		if ( buffer_index_ >= 0 )
 			{
 				singleStepper_->setStates( t_, x_ );
 				singleStepper_->doStep( h );
 				singleStepper_->getStates( t_, x_ );
 				buffer_x_.insert_element( buffer_index_,  x_ );
 				buffer_dx_.insert_element( buffer_index_,  f_( t_, x_ ) );
-				buffer_index_++;
+				buffer_index_--;
 			}
 		else{
 			// calculate the predictor
@@ -127,27 +128,13 @@ public:
 				corrector_->correct( t_, x_, h_, buffer_x_, buffer_dx_ );
 
 			// cycle the buffer and fill in the new value
-			for ( int i = 0; i < buffer_size_-1; i++ ){
-				buffer_x_[i]  = buffer_x_[i+1];
-				buffer_dx_[i] = buffer_dx_[i+1];
+			for ( int i = buffer_size_-1; i > 0; i-- ){
+				buffer_x_[i]  = buffer_x_[i-1];
+				buffer_dx_[i] = buffer_dx_[i-1];
 			}
-			buffer_x_[buffer_size_-1]=x_;
-			buffer_dx_[buffer_size_-1]=f_(t_,x_);
-			dx_ = buffer_dx_[buffer_size_-1];
-			/*
-
-			buffer_x_[0]  = buffer_x_[1];
-			buffer_x_[1]  = buffer_x_[2];
-			buffer_x_[2]  = buffer_x_[3];
-			buffer_x_[3]  = x_;
-
-			buffer_dx_[0] = buffer_dx_[1];
-			buffer_dx_[1] = buffer_dx_[2];
-			buffer_dx_[2] = buffer_dx_[3];
-			buffer_dx_[3] = f_( t_, x_ );
-
-			dx_           = buffer_dx_[3];
-			*/
+			buffer_x_[0]=x_;
+			buffer_dx_[0]=f_(t_,x_);
+			dx_ = buffer_dx_[0];
 		}
 	}
 

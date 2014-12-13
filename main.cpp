@@ -94,9 +94,10 @@ int convergenceOrder( predictor* predictor )
 
 	while ( !stepperFailed && p<10 ){
 		for ( int i  = 0; i < buffer_size; i++ ){
-			buff_x_[buffer_size-1-i]=x0*pow(-i,p+1.0)/(p+1.0);
-			buff_dx_[buffer_size-1-i]=x0*pow(-i,p);
+			buff_x_[i]=x0*pow(-i,p+1.0)/(p+1.0);
+			buff_dx_[i]=x0*pow(-i,p);
 		}
+
 		predictor->predict( t, x, 1, buff_x_, buff_dx_ );
 		if ( fabs( x[0] - 1.0/(1.0+p) ) > pow( 2, -10 ) ){
 			stepperFailed = true;
@@ -132,8 +133,8 @@ int convergenceOrder( corrector* corrector )
 	while ( !stepperFailed && p<10 ){
 		x = x2;
 		for ( int i  = 0; i < 4; i++ ){
-			buff_x_[3-i]=x0*pow(-i,p+1.0)/(p+1.0);
-			buff_dx_[3-i]=x0*pow(-i,p);
+			buff_x_[i]=x0*pow(-i,p+1.0)/(p+1.0);
+			buff_dx_[i]=x0*pow(-i,p);
 		}
 		for ( int j = 0; j < 8; j++){
 			corrector->correct( t, x, 1, buff_x_, buff_dx_ );
@@ -200,13 +201,13 @@ int main()
 	int nStates = 1;
 	
 	// simulations
-	runSimulation( new ode45Stepper( nStates, f ) );
 	runSimulation( new ode12Stepper( nStates, f ) );
 	runSimulation( new ode23Stepper( nStates, f ) );
 	runSimulation( new ode34Stepper( nStates, f ) );
+    runSimulation( new ode45Stepper( nStates, f ) );
 
-	runSimulation( new fehlbergStepper( nStates,f ) );
 	runSimulation( new threeEightStepper( nStates, f ) );
+	runSimulation( new fehlbergStepper( nStates,f ) );
 
 	runSimulation( new abmStepper  ( nStates, f ) );
 	runSimulation( new bdfStepper  ( nStates, f ) );
