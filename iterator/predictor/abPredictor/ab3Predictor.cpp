@@ -7,6 +7,6 @@ class ab3Predictor : public abPredictor
 public:
 ab3Predictor( rhs_type f ) :
 	abPredictor( f, "am3Pred", 3 , 
-	             makeVector( {23.0/12.0, -4.0/3.0, 5.0/12.0} ) 
+	             {23.0/12.0, -4.0/3.0, 5.0/12.0} 
 	             ){};
 };
