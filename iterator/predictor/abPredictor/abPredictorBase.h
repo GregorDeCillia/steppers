@@ -5,13 +5,13 @@
 class abPredictor : public predictor
 {
  private:
-	vector<value_type, std::vector<value_type> > a_;
+	coefficient_vector a_;
  public:
 
  abPredictor( rhs_type f , string name, int ord, 
-              std::initializer_list<value_type> list ) :
-	predictor( f, name, ord, list.size() ),
-		a_( list ){};
+              coefficient_vector a ) :
+	predictor( f, name, ord, a.size() ),
+		a_( a ){};
 
 	void predict( time_type &t_, state_type &x_, time_type h_, 
 	              buffer_type buffer_x_, buffer_type buffer_dx_ )

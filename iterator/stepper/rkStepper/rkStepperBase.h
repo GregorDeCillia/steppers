@@ -12,8 +12,8 @@ class rkStepper: public stepper
  protected:
 	int butcher_size; 
 	buffer_type k_;
-	matrix<value_type> A;
-    vector<value_type> b;
+	coefficient_matrix A;
+	coefficient_vector b;
     vector<value_type> c;
 	state_type x2_;
 
@@ -22,20 +22,23 @@ class rkStepper: public stepper
 		for ( int i = 0; i < butcher_size; i++ ){
 			c[ i ] = 0;
 			for ( int j = 0; j < butcher_size; j++ )
-				c[i] += A( i, j );
+				c[i] += A[i][j];
 		}
 	}
 
 	
  public:
- rkStepper( unsigned int nStates, rhs_type f, string name, 
-	            int butcher_size, int ord ) : stepper( nStates, f, ord, name ),
-		butcher_size( butcher_size ),
+ rkStepper( unsigned int nStates, rhs_type f, string name, int ord,
+            coefficient_vector b, 
+            coefficient_matrix A
+            ) : stepper( nStates, f, ord, name ),
+		butcher_size( b.size() - 1 ),
 		k_( butcher_size + 1 ),
-		A( butcher_size, butcher_size ),
-		b( butcher_size + 1 ),
+		b( b ),
+		A( A ),
 		c( butcher_size ),
-		x2_( nStates ){
+		x2_( nStates ){ 
+			calculateC();
 		};		
 
 	void doStep( time_type h ){
@@ -43,7 +46,7 @@ class rkStepper: public stepper
 		for ( int i = 1; i < ( butcher_size + 1 ); i++ ){
 			x2_ *= 0;
 			for ( int j = 0; j < i; j++ ){
-				x2_ += A(i-1,j) *k_[j];
+				x2_ += A[i-1][j] *k_[j];
 			}
 			k_[i] = f_( t_ + h*c[i-1], x_+h*x2_ );
 		}

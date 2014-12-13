@@ -8,8 +8,9 @@ class ode12Stepper: public rkStepper
 
 public:
 	ode12Stepper( unsigned int nStates , rhs_type f ) :
-		rkStepper( nStates, f, "ode12", 0, 1 )
+		rkStepper( nStates, f, "ode12",  1 , 
+		           {1.0},{{}}
+		           )
 	{
-          b << 1.0;
 	};
 };
