@@ -20,6 +20,15 @@
 #include "iterator/corrector/amCorrector/am4Corrector.cpp"
 #include "iterator/corrector/amCorrector/am5Corrector.cpp"
 
+#include "iterator/corrector/bdfCorrector/bdfCorrectorBase.h"
+#include "iterator/corrector/bdfCorrector/bdf1Corrector.cpp"
+#include "iterator/corrector/bdfCorrector/bdf2Corrector.cpp"
+#include "iterator/corrector/bdfCorrector/bdf3Corrector.cpp"
+#include "iterator/corrector/bdfCorrector/bdf4Corrector.cpp"
+#include "iterator/corrector/bdfCorrector/bdf5Corrector.cpp"
+#include "iterator/corrector/bdfCorrector/bdf6Corrector.cpp"
+
+
 #include <boost/numeric/ublas/io.hpp>
 
 static int p = 1;
@@ -133,13 +142,14 @@ int convergenceOrder( corrector* corrector )
 	corrector->setRHS( f2 );
 
 	bool stepperFailed = false;
+	int buffer_size = corrector->getBufferSize();
 	p = 0;
-	buffer_type buff_x_(4);
-	buffer_type buff_dx_(4);
+	buffer_type buff_x_( buffer_size );
+	buffer_type buff_dx_( buffer_size );
 
 	while ( !stepperFailed && p<10 ){
 		x = x2;
-		for ( int i  = 0; i < 4; i++ ){
+		for ( int i  = 0; i < buffer_size; i++ ){
 			buff_x_[i]=x0*pow(-i,p+1.0)/(p+1.0);
 			buff_dx_[i]=x0*pow(-i,p);
 		}
@@ -172,13 +182,14 @@ int convergenceOrder( multiStepper* multiStepper )
 	time_type t0 = 0;
 	time_type t;
 	multiStepper->setRHS( f2 );
+	int buffer_size = multiStepper->getBufferSize();
 	p = 0;
 
 	bool stepperFailed = false;
 
 	while( p<10 && !stepperFailed ){
 		multiStepper->setStates( t0, x0 );
-		for ( int i = 0; i < 6; i++ )
+		for ( int i = 0; i < buffer_size + 2; i++ )
 			{
 				multiStepper->doStep( 1 );
 				multiStepper->getStates( t, x );
@@ -229,10 +240,10 @@ int main()
 	convergenceOrder( new lagrangePredictor( f, 4 ) );
 
 	convergenceOrder( new abmCorrector( f ) );
-	convergenceOrder( new bdfCorrector( f ) );
+	//convergenceOrder( new bdfCorrector( f ) );
 
 	// convergence order for multistep methods
-	convergenceOrder( new bdfStepper( nStates, f ) );
+	convergenceOrder( new bdfStepper( nStates, f2 ) );
 	convergenceOrder( new abmStepper( nStates, f ) );
 
 	convergenceOrder( new am1Corrector( f ) );
@@ -240,5 +251,14 @@ int main()
 	convergenceOrder( new am3Corrector( f ) );
 	convergenceOrder( new am4Corrector( f ) );
 	convergenceOrder( new am5Corrector( f ) );
+
+	convergenceOrder( new bdfCorrector( f, "test", 2, 
+	                                    {-18.0/11.0,9.0/11.0,-2.0/11.0}, 6.0/11.0 ) );
+	convergenceOrder( new bdf1Corrector( f ) );
+	convergenceOrder( new bdf2Corrector( f ) );
+	convergenceOrder( new bdf3Corrector( f ) );
+	convergenceOrder( new bdf4Corrector( f ) );
+	convergenceOrder( new bdf5Corrector( f ) );
+	convergenceOrder( new bdf6Corrector( f ) );
 
 }

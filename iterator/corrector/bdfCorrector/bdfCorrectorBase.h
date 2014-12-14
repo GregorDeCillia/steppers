@@ -24,6 +24,6 @@ public:
 			{
 				dx += -a[i]*buffer_x_[i]; 
 			}
-		x_ = buffer_x_[0] + h_*dx;
+		x_ =  dx;
 	}
 };

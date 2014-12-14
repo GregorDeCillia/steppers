@@ -24,7 +24,7 @@ class multiStepper : public stepper
 
   /// delete buffered values
   void clearBuffers(){
-	  buffer_index_ = buffer_size_-1;
+	  buffer_index_ = buffer_size_ - 1;
 	  buffer_x_.insert_element( buffer_index_,  x_ );
 	  buffer_dx_.insert_element( buffer_index_,  f_( t_, x_ ) );
 	  buffer_index_--;
@@ -38,7 +38,7 @@ class multiStepper : public stepper
 	  delete singleStepper_;
   }
 
- multiStepper( unsigned int nStates, int ord, rhs_type f,
+ multiStepper( unsigned int nStates, int ord, int buffer_size, rhs_type f,
                int nCorrSteps, string name,
                predictor* predictor,
                corrector* corrector,
@@ -46,9 +46,9 @@ class multiStepper : public stepper
                ) : stepper( nStates , f, ord , name ),
 	  buffer_x_( ord ),
 	  buffer_dx_( ord ),
-	  buffer_index_( 4-1 ),
+	  buffer_index_( buffer_size-1 ),
 	  nCorrSteps_( nCorrSteps ),
-	  buffer_size_( 4 ),
+	  buffer_size_( buffer_size ),
 	  predictor_( predictor ),
 	  corrector_( corrector ),
 	  singleStepper_( singleStepper )
@@ -73,6 +73,8 @@ class multiStepper : public stepper
 			            << "corrector Order" << corrector_->getOrder() << std::endl
 			            << "corrector Steps" << nCorrSteps_ << std::endl;		  
 	  }
+
+  int getBufferSize(){ return buffer_size_; } 
 
 	void printBuffer(){
 		std::cout << boost::format( "%-15E" ) % t_;
