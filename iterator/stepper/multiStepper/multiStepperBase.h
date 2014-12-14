@@ -44,8 +44,8 @@ class multiStepper : public stepper
                corrector* corrector,
                rkStepper* singleStepper
                ) : stepper( nStates , f, ord , name ),
-	  buffer_x_( ord ),
-	  buffer_dx_( ord ),
+	  buffer_x_( buffer_size ),
+	  buffer_dx_( buffer_size ),
 	  buffer_index_( buffer_size-1 ),
 	  nCorrSteps_( nCorrSteps ),
 	  buffer_size_( buffer_size ),

@@ -1,34 +1,22 @@
 #include "include/typedefs.h"
+
+#include "iterator/predictor/abPredictor/createAbPredictor.cpp"
+#include "iterator/corrector/amCorrector/newAmCorrector.cpp"
+#include "iterator/corrector/bdfCorrector/newBdfCorrector.cpp"
+
 #include "iterator/stepper/multiStepper/abmStepper.cpp"
 #include "iterator/stepper/multiStepper/bdfStepper.cpp"
 #include "iterator/stepper/rkStepper/ode12Stepper.cpp"
 #include "iterator/stepper/rkStepper/ode23Stepper.cpp"
 #include "iterator/stepper/rkStepper/ode34Stepper.cpp"
 #include "iterator/stepper/rkStepper/ode45Stepper.cpp"
+
 #include "iterator/stepper/rkStepper/threeEightStepper.cpp"
 #include "iterator/stepper/rkStepper/fehlbergStepper.cpp"
 
 #include "iterator/stepper/eulerStepper.cpp"
-#include "iterator/predictor/abPredictor/ab1Predictor.cpp"
-#include "iterator/predictor/abPredictor/ab2Predictor.cpp"
-#include "iterator/predictor/abPredictor/ab3Predictor.cpp"
-#include "iterator/predictor/abPredictor/ab5Predictor.cpp"
 
 #include "iterator/predictor/lagrangePredictor.cpp"
-#include "iterator/corrector/amCorrector/am1Corrector.cpp"
-#include "iterator/corrector/amCorrector/am2Corrector.cpp"
-#include "iterator/corrector/amCorrector/am3Corrector.cpp"
-#include "iterator/corrector/amCorrector/am4Corrector.cpp"
-#include "iterator/corrector/amCorrector/am5Corrector.cpp"
-
-#include "iterator/corrector/bdfCorrector/bdfCorrectorBase.h"
-#include "iterator/corrector/bdfCorrector/bdf1Corrector.cpp"
-#include "iterator/corrector/bdfCorrector/bdf2Corrector.cpp"
-#include "iterator/corrector/bdfCorrector/bdf3Corrector.cpp"
-#include "iterator/corrector/bdfCorrector/bdf4Corrector.cpp"
-#include "iterator/corrector/bdfCorrector/bdf5Corrector.cpp"
-#include "iterator/corrector/bdfCorrector/bdf6Corrector.cpp"
-
 
 #include <boost/numeric/ublas/io.hpp>
 
@@ -231,32 +219,27 @@ int main()
 	runSimulation( new fehlbergStepper( nStates,f ) );
 
 
+
 	/** convergence orders of predictors and correctors **/
 	// abPredictor
-	convergenceOrder( new ab1Predictor( f ) );
-	convergenceOrder( new ab2Predictor( f ) );
-	convergenceOrder( new ab3Predictor( f ) );
-	convergenceOrder( new ab4Predictor( f ) );
-	convergenceOrder( new ab5Predictor( f ) );
+	for ( int i = 1; i <= 5; i++ )
+		convergenceOrder( newAbPredictor( f, i ) );
+
 	// lagrangePredictor
-	convergenceOrder( new lagrangePredictor( f, 4 ) );
+	for ( int i = 1; i <= 10; i++ )
+		convergenceOrder( new lagrangePredictor( f, i ) );
 
 	/** convergence oder for correctors **/
 	// the old abmCorrector
 	convergenceOrder( new abmCorrector( f ) );
 	// abmCorrectors
-	convergenceOrder( new am1Corrector( f ) );
-	convergenceOrder( new am2Corrector( f ) );
-	convergenceOrder( new am3Corrector( f ) );
-	convergenceOrder( new am4Corrector( f ) );
-	convergenceOrder( new am5Corrector( f ) );
+
+	for ( int i = 1; i <= 5; i++ )
+		convergenceOrder( newAmCorrector( f, i ) );
+
 	// bdfCorrectors
-	convergenceOrder( new bdf1Corrector( f ) );
-	convergenceOrder( new bdf2Corrector( f ) );
-	convergenceOrder( new bdf3Corrector( f ) );
-	convergenceOrder( new bdf4Corrector( f ) );
-	convergenceOrder( new bdf5Corrector( f ) );
-	convergenceOrder( new bdf6Corrector( f ) );
+	for ( int i = 1; i <= 6; i++ )
+		convergenceOrder( newBdfCorrector( f, i ) );
 
 	// multistepper
 	runSimulation( new abmStepper  ( nStates, f ) );
