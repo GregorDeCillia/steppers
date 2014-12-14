@@ -1,6 +1,7 @@
 #pragma once
 
 #include "predictorBase.h"
+#include <string>
 
 /**
    implements the lagrange formula to get predictors out of
@@ -22,7 +23,9 @@ public:
 	   
 	 **/
 	lagrangePredictor( rhs_type f, int buff_size ) :
-		predictor( f, "lagPred",  buff_size-1, buff_size ),
+		predictor( f, 
+		           std::string("la")+std::to_string(buff_size-1)+std::string("Pred"),  
+		           buff_size-1, buff_size ),
 		p( buff_size )
 		
 	{

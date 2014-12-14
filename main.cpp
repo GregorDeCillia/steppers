@@ -9,6 +9,7 @@
 #include "iterator/stepper/rkStepper/fehlbergStepper.cpp"
 
 #include "iterator/stepper/eulerStepper.cpp"
+#include "iterator/predictor/abPredictor/ab1Predictor.cpp"
 #include "iterator/predictor/abPredictor/ab2Predictor.cpp"
 #include "iterator/predictor/abPredictor/ab3Predictor.cpp"
 #include "iterator/predictor/abPredictor/ab5Predictor.cpp"
@@ -30,6 +31,7 @@
 
 
 #include <boost/numeric/ublas/io.hpp>
+
 
 static int p = 1;
 
@@ -74,7 +76,7 @@ void runSimulation( stepper* stepper,
 {
 	// starting conditions for the simulation
 	state_type x0( 1 );
-	x0[0] = 1;
+	x0[0] = 1.0;
 	time_type t0 = 0; 
 
 	int nSteps = pow( 2, 8 );
@@ -84,6 +86,7 @@ void runSimulation( stepper* stepper,
 	stepper->setStates( t0, x0 );
 	for ( int i = 0; i < nSteps; i++ ){
 		stepper->doStep( 1.0/nSteps );
+		stepper->getStates( t, x );
 	}
 	stepper->getStates( t, x );
 	std::cout << stepper->getName() << "\t" << convergenceOrder( stepper ) << "\t";
@@ -218,47 +221,49 @@ int main()
 {
 	int nStates = 1;
 	
-	// simulations
+	/**   simulations ( inputs get cast to iterator ) **/
+	// rk
 	runSimulation( new ode12Stepper( nStates, f ) );
 	runSimulation( new ode23Stepper( nStates, f ) );
 	runSimulation( new ode34Stepper( nStates, f ) );
     runSimulation( new ode45Stepper( nStates, f ) );
-
 	runSimulation( new threeEightStepper( nStates, f ) );
 	runSimulation( new fehlbergStepper( nStates,f ) );
 
-	runSimulation( new abmStepper  ( nStates, f ) );
-	runSimulation( new bdfStepper  ( nStates, f ) );
 
-	// convergence orders of predictors and
-	// correctors
-	
+	/** convergence orders of predictors and correctors **/
+	// abPredictor
+	convergenceOrder( new ab1Predictor( f ) );
 	convergenceOrder( new ab2Predictor( f ) );
 	convergenceOrder( new ab3Predictor( f ) );
 	convergenceOrder( new ab4Predictor( f ) );
 	convergenceOrder( new ab5Predictor( f ) );
+	// lagrangePredictor
 	convergenceOrder( new lagrangePredictor( f, 4 ) );
 
+	/** convergence oder for correctors **/
+	// the old abmCorrector
 	convergenceOrder( new abmCorrector( f ) );
-	//convergenceOrder( new bdfCorrector( f ) );
-
-	// convergence order for multistep methods
-	convergenceOrder( new bdfStepper( nStates, f2 ) );
-	convergenceOrder( new abmStepper( nStates, f ) );
-
+	// abmCorrectors
 	convergenceOrder( new am1Corrector( f ) );
 	convergenceOrder( new am2Corrector( f ) );
 	convergenceOrder( new am3Corrector( f ) );
 	convergenceOrder( new am4Corrector( f ) );
 	convergenceOrder( new am5Corrector( f ) );
-
-	convergenceOrder( new bdfCorrector( f, "test", 2, 
-	                                    {-18.0/11.0,9.0/11.0,-2.0/11.0}, 6.0/11.0 ) );
+	// bdfCorrectors
 	convergenceOrder( new bdf1Corrector( f ) );
 	convergenceOrder( new bdf2Corrector( f ) );
 	convergenceOrder( new bdf3Corrector( f ) );
 	convergenceOrder( new bdf4Corrector( f ) );
 	convergenceOrder( new bdf5Corrector( f ) );
 	convergenceOrder( new bdf6Corrector( f ) );
+
+	// multistepper
+	runSimulation( new abmStepper  ( nStates, f ) );
+	runSimulation( new bdfStepper  ( nStates, f ) );
+
+	/** convergence order for multistep methods 	**/
+	convergenceOrder( new abmStepper( nStates, f ) );
+	convergenceOrder( new bdfStepper( nStates, f ) );
 
 }

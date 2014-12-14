@@ -18,7 +18,7 @@ public:
 	void correct( time_type &t_, state_type &x_, time_type h_, 
 	              buffer_type buffer_x_, buffer_type buffer_dx_ )
 	{
-		state_type dx = beta*f_( t_, x_ );
+		state_type dx = beta*h_*f_( t_, x_ );
 
 		for ( int i = 0; i < getBufferSize(); i++ )
 			{
