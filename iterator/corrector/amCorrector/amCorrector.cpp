@@ -10,7 +10,7 @@ class amCorrector : public corrector
 public:
 	amCorrector( rhs_type f , string name, int ord, 
 	             coefficient_vector b ) :
-		corrector( f, name, ord ),
+		corrector( f, name, ord, b.size() ),
 		b( b ),
 		buffer_size( b.size()-1 ){}
 
