@@ -55,7 +55,7 @@ int convergenceOrder( stepper* stepper )
 		stepper->setStates( t0, x0 );
 		stepper->doStep( 1.0 );
 		stepper->getStates( t, x );
-		if ( fabs( x[0] - 1.0/(1.0+p) ) > pow( 2, -10 ) ){
+		if ( fabs( x[0] - 1.0/(1.0+p) ) > pow( 2, -20 ) ){
 			stepperFailed = true;
 		}
 		p++;
@@ -118,7 +118,7 @@ int convergenceOrder( predictor* predictor )
 		}
 		
 		predictor->predict( t, x, 1, buff_x_, buff_dx_ );
-		if ( fabs( x[0] - 1.0/(1.0+p) ) > pow( 2, -10 ) ){
+		if ( fabs( x[0] - 1.0/(1.0+p) ) > pow( 2, -20 ) ){
 			stepperFailed = true;
 		}
 		p++;
@@ -159,7 +159,7 @@ int convergenceOrder( corrector* corrector )
 		for ( int j = 0; j < 8; j++){
 			corrector->correct( t, x, 1, buff_x_, buff_dx_ );
 		}
-		if ( fabs( x[0] - 1.0/(1.0+p) ) > pow( 2, -10 ) ){
+		if ( fabs( x[0] - 1.0/(1.0+p) ) > pow( 2, -20 ) ){
 			stepperFailed = true;
 		}
 		p++;

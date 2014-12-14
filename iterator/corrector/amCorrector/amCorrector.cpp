@@ -2,6 +2,7 @@
 
 #include "../correctorBase.h"
 #include "boost/numeric/ublas/io.hpp"
+#include <algorithm>
 
 class amCorrector : public corrector
 {
@@ -9,7 +10,9 @@ class amCorrector : public corrector
 public:
 	amCorrector( rhs_type f , string name, int ord, 
 	             coefficient_vector b ) :
-		corrector( f, name, ord, b.size() ),
+		corrector( f, name, ord,
+		           std::max( (int)(b.size()-1), 1 )    /// needed buffer size
+		           ),
 		b( b )
 	{}
 
