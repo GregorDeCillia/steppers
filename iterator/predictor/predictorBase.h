@@ -5,6 +5,7 @@
 class predictor : public iterator
 {
  protected:
+	/// how much steps do have to be stored before predict can be called
 	int buffer_size;
 
  public:
@@ -13,7 +14,7 @@ class predictor : public iterator
 	iterator( f, name, ord ),
 		buffer_size( buffer_size ){};
 
- int getBufferSize(){
+ int getBufferSize(){	 
 	 return buffer_size;
  }
 

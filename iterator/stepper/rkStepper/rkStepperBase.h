@@ -14,7 +14,7 @@ class rkStepper: public stepper
 	buffer_type k_;
 	coefficient_matrix A;
 	coefficient_vector b;
-    vector<value_type> c;
+    coefficient_vector c;
 	state_type x2_;
 
 	void calculateC()

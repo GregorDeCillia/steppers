@@ -6,10 +6,15 @@
 class stepper : public iterator{
 
 protected:
+	/// dimension of the state space
     unsigned int nStates_;
+    /// step size. Gets updated by each call of doStep
 	time_type h_;
+	/// time
 	time_type t_;
+	/// state
 	state_type x_;
+	/// derivative
 	state_type dx_;
 
 public:
@@ -53,6 +58,6 @@ stepper( int nStates, rhs_type f , int ord , string name ) :
 		}
 		std::cout << std::endl;
 	}
-
+	/// perform a step
 	virtual void doStep( time_type h ) = 0;
 };

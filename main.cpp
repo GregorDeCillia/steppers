@@ -13,6 +13,8 @@
 #include "iterator/predictor/abPredictor/ab3Predictor.cpp"
 #include "iterator/predictor/abPredictor/ab5Predictor.cpp"
 
+#include "iterator/predictor/lagrangePredictor.cpp"
+
 #include <boost/numeric/ublas/io.hpp>
 
 static int p = 1;
@@ -97,7 +99,7 @@ int convergenceOrder( predictor* predictor )
 			buff_x_[i]=x0*pow(-i,p+1.0)/(p+1.0);
 			buff_dx_[i]=x0*pow(-i,p);
 		}
-
+		
 		predictor->predict( t, x, 1, buff_x_, buff_dx_ );
 		if ( fabs( x[0] - 1.0/(1.0+p) ) > pow( 2, -10 ) ){
 			stepperFailed = true;
@@ -220,13 +222,15 @@ int main()
 	convergenceOrder( new ab3Predictor( f ) );
 	convergenceOrder( new ab4Predictor( f ) );
 	convergenceOrder( new ab5Predictor( f ) );
-
+	convergenceOrder( new lagrangePredictor( f, 4 ) );
 
 	convergenceOrder( new abmCorrector( f ) );
 	convergenceOrder( new bdfCorrector( f ) );
 
 	// convergence order for multistep methods
-	convergenceOrder( new bdfStepper( nStates, f ) );
+	convergenceOrder( new bdfStepper( nStates, f2 ) );
 	convergenceOrder( new abmStepper( nStates, f ) );
+
+
 
 }

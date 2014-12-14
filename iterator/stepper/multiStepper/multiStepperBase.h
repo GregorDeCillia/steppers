@@ -9,19 +9,20 @@
 #include "../../predictor/predictorBase.h"
 #include "../../corrector/correctorBase.h"
 
+/// base class for multisteppers
 class multiStepper : public stepper
 {
-protected:
+ private:
   buffer_type buffer_x_;
-  buffer_type buffer_dx_;
+  buffer_type buffer_dx_;  
   int buffer_index_;
   int nCorrSteps_;
   int buffer_size_;
-
   predictor* predictor_;
   corrector* corrector_;
   rkStepper* singleStepper_;
 
+  /// delete buffered values
   void clearBuffers(){
 	  buffer_index_ = buffer_size_-1;
 	  buffer_x_.insert_element( buffer_index_,  x_ );
@@ -29,7 +30,7 @@ protected:
 	  buffer_index_--;
   }
 
-public:
+ public:
 
   ~multiStepper(){
 	  delete predictor_;
