@@ -14,6 +14,11 @@
 #include "iterator/predictor/abPredictor/ab5Predictor.cpp"
 
 #include "iterator/predictor/lagrangePredictor.cpp"
+#include "iterator/corrector/amCorrector/am1Corrector.cpp"
+#include "iterator/corrector/amCorrector/am2Corrector.cpp"
+#include "iterator/corrector/amCorrector/am3Corrector.cpp"
+#include "iterator/corrector/amCorrector/am4Corrector.cpp"
+#include "iterator/corrector/amCorrector/am5Corrector.cpp"
 
 #include <boost/numeric/ublas/io.hpp>
 
@@ -227,9 +232,13 @@ int main()
 	convergenceOrder( new bdfCorrector( f ) );
 
 	// convergence order for multistep methods
-	convergenceOrder( new bdfStepper( nStates, f2 ) );
+	convergenceOrder( new bdfStepper( nStates, f ) );
 	convergenceOrder( new abmStepper( nStates, f ) );
 
-
+	convergenceOrder( new am1Corrector( f ) );
+	convergenceOrder( new am2Corrector( f ) );
+	convergenceOrder( new am3Corrector( f ) );
+	convergenceOrder( new am4Corrector( f ) );
+	convergenceOrder( new am5Corrector( f ) );
 
 }

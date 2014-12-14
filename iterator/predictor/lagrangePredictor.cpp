@@ -2,11 +2,25 @@
 
 #include "predictorBase.h"
 
+/**
+   implements the lagrange formula to get predictors out of
+   buffers created by equidistant points i.e.
+   \f[
+        x_{n+1} \approx \sum_{j=0}^{ \texttt{buff\_size} } b_j x_{n-j}
+   \f]
+ **/
 /// predictor based on the lagrange formula
 class lagrangePredictor : public predictor{
 private:
 	coefficient_vector p;
 public:
+	/**
+	   \param[in] f            the righthandside of the ode
+	   \param[in] buff_size    how much buffer should be used for the extrapolation.
+	                           The higher the order is picked, the better the
+	                           extrapolation is
+	   
+	 **/
 	lagrangePredictor( rhs_type f, int buff_size ) :
 		predictor( f, "lagPred",  buff_size-1, buff_size ),
 		p( buff_size )

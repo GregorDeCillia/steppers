@@ -4,6 +4,7 @@
 
 #include "stepperBase.h"
 
+/// Good old [Eulerstepper](https://en.wikipedia.org/wiki/Euler_method)
 class eulerStepper: public stepper
 {
 public:

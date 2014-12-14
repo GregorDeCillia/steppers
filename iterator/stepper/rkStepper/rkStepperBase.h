@@ -7,10 +7,11 @@
 
 #include "../stepperBase.h"
 
+/// single stepper of the [runge kutta](https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods) type
 class rkStepper: public stepper
 {
  protected:
-	int butcher_size; 
+	int butcher_size;
 	buffer_type k_;
 	coefficient_matrix A;
 	coefficient_vector b;

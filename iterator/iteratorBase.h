@@ -13,7 +13,13 @@ class iterator
 	int ord_;
 
  public:
+	/**
+	   \param[in]    f      the righthandside of the ODE 
+	   \param[in]    name   the name of the method
+	   \param[in]    ord    the global trunounciation error
 
+	 **/
+	/// constructor
  iterator( rhs_type f, string name, int ord ) :
 	ord_( ord ),
 		name_( name ),
@@ -26,7 +32,7 @@ class iterator
 	int getOrder(){
 		return ord_;
 	}
-
+	/// change the rhs of the ode. note that this will call clearBuffers() for LMMs
 	virtual void setRHS( rhs_type f ){
 		f_ = f;
 	}
