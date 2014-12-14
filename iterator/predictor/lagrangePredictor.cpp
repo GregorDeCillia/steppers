@@ -2,7 +2,7 @@
 
 #include "predictorBase.h"
 
-
+/// predictor based on the lagrange formula
 class lagrangePredictor : public predictor{
 private:
 	coefficient_vector p;

@@ -2,6 +2,7 @@
 
 #include "../predictorBase.h"
 
+/// Predictors derived from [Adams Bashforth methods](https://en.wikipedia.org/wiki/Linear_multistep_method#Adams.E2.80.93Bashforth_methods)
 class abPredictor : public predictor
 {
 

@@ -2,6 +2,7 @@
 
 #include "correctorBase.h"
 
+/// Corrector based on a 5th order implicit [Adams Moulton method](https://en.wikipedia.org/wiki/Linear_multistep_method#Adams.E2.80.93Moulton_methods) 
 class abmCorrector : public corrector
 {
 public:

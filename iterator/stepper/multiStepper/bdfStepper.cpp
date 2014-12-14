@@ -2,7 +2,6 @@
 
 #include "multiStepperBase.h"
 
-#include "../../predictor/bdfPredictor.cpp"
 #include "../../predictor/lagrangePredictor.cpp"
 #include "../../corrector/bdfCorrector.cpp"
 #include "../rkStepper/ode45Stepper.cpp"
@@ -16,7 +15,6 @@ public:
 	bdfStepper( unsigned int nStates, rhs_type f ) : 
 		multiStepper( nStates, 4, f , 1 , "bdf" , 
 		              new lagrangePredictor( f, 4 ),
-		              //new bdfPredictor( f ), 
 		              new bdfCorrector( f ),
 		              new ode45Stepper( nStates, f )
 		              ){};

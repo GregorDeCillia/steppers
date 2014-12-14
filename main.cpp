@@ -216,8 +216,7 @@ int main()
 
 	// convergence orders of predictors and
 	// correctors
-	convergenceOrder( new bdfPredictor( f ) );
-
+	
 	convergenceOrder( new ab2Predictor( f ) );
 	convergenceOrder( new ab3Predictor( f ) );
 	convergenceOrder( new ab4Predictor( f ) );

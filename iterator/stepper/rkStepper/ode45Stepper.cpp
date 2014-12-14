@@ -3,6 +3,7 @@
 #include "../../../include/assigner.hpp"
 #include "rkStepperBase.h"
 
+/// classical runge kutta method
 class ode45Stepper: public rkStepper
 {
 
