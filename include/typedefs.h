@@ -16,4 +16,4 @@ typedef state_type (*rhs_type) (time_type , state_type);
 typedef std::string string;
 
 typedef std::vector<double> coefficient_vector;
-typedef std::vector<std::vector<double>> coefficient_matrix;
+typedef std::vector<std::vector<double> > coefficient_matrix;
