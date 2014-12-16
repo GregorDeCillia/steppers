@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../stepperBase.h"
 #include "../rkStepper/rkStepperBase.h"
 
 #include <boost/format.hpp>
@@ -69,9 +68,9 @@ class multiStepper : public stepper
 		  if ( corrector_->getOrder() - predictor_->getOrder() != nCorrSteps_ )
 			  std::cout << "wrong nuber of corrector steps in " 
 			            << getName() << ": " << std::endl 
-			            << "predictor Order" << predictor_->getOrder() << std::endl
-			            << "corrector Order" << corrector_->getOrder() << std::endl
-			            << "corrector Steps" << nCorrSteps_ << std::endl;		  
+			            << " predictor Order: " << predictor_->getOrder() << std::endl
+			            << " corrector Order: " << corrector_->getOrder() << std::endl
+			            << " corrector Steps: " << nCorrSteps_ << std::endl;
 	  }
 
   int getBufferSize(){ return buffer_size_; } 

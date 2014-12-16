@@ -2,10 +2,9 @@
 
 #include "multiStepperBase.h"
 
-#include "../../predictor/abPredictor/ab4Predictor.cpp"
-#include "../../corrector/abmCorrector.cpp"
-#include "../rkStepper/fehlbergStepper.cpp"
-#include "../../corrector/amCorrector/am5Corrector.cpp"
+#include "../../predictor/abPredictor/newAbPredictor.cpp"
+#include "../../corrector/amCorrector/newAmCorrector.cpp"
+#include "../rkStepper/newRkStepper.cpp"
 
 
 /// adams bashforth moulton method
@@ -16,9 +15,9 @@ public:
 
 	abmStepper( unsigned int nStates , rhs_type f ) :
 		multiStepper( nStates, 5, 4, f , 1, "abm",
-			              new ab4Predictor( f ),
-			              new am5Corrector( f ),
-			              new fehlbergStepper( nStates, f )
+		              newAbPredictor(          f, 4 ),
+		              newAmCorrector(          f, 5 ),
+		              newRkStepper  ( nStates, f, 5 )
 		              ){};
 
 };

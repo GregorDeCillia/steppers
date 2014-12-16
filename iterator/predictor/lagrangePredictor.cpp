@@ -22,16 +22,15 @@ public:
 	                           extrapolation is
 	   
 	 **/
-	lagrangePredictor( rhs_type f, int buff_size ) :
+	lagrangePredictor( rhs_type f, int ord ) :
 		predictor( f, 
-		           std::string("la")+std::to_string(buff_size-1)+std::string("Pred"),  
-		           buff_size-1, buff_size ),
-		p( buff_size )
-		
+		           std::string("la")+std::to_string(ord)+std::string("Pred"),
+		           ord , ord+1 ),
+		p( ord+1 )
 	{
-		for ( int i = 0; i < buff_size; i++ ){
+		for ( int i = 0; i < getBufferSize(); i++ ){
 			p[i] = 1;
-			for ( int j = 0; j < buff_size; j++ )
+			for ( int j = 0; j < getBufferSize(); j++ )
 				if ( i != j )
 					p[i] *= ( 1.0 + j )/( j - i );
 		}

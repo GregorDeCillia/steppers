@@ -1,6 +1,6 @@
 #include "include/typedefs.h"
 
-#include "iterator/predictor/abPredictor/createAbPredictor.cpp"
+#include "iterator/predictor/abPredictor/newAbPredictor.cpp"
 #include "iterator/corrector/amCorrector/newAmCorrector.cpp"
 #include "iterator/corrector/bdfCorrector/newBdfCorrector.cpp"
 
@@ -218,9 +218,8 @@ int main()
 	runSimulation( new threeEightStepper( nStates, f ) );
 	runSimulation( new fehlbergStepper( nStates,f ) );
 
-
-
 	/** convergence orders of predictors and correctors **/
+
 	// abPredictor
 	for ( int i = 1; i <= 5; i++ )
 		convergenceOrder( newAbPredictor( f, i ) );
@@ -230,10 +229,8 @@ int main()
 		convergenceOrder( new lagrangePredictor( f, i ) );
 
 	/** convergence oder for correctors **/
-	// the old abmCorrector
-	convergenceOrder( new abmCorrector( f ) );
-	// abmCorrectors
 
+	// abmCorrectors
 	for ( int i = 1; i <= 5; i++ )
 		convergenceOrder( newAmCorrector( f, i ) );
 
