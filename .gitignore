@@ -10,5 +10,7 @@
 # Doxygen Documentation #
 #########################
 
+html/
+latex/
 doxygen/
 .doxygen.config
